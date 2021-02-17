@@ -23,6 +23,12 @@ namespace ft {
 
 	template<class T> struct is_const					{enum {value = false};};
 	template<class T> struct is_const<const T>		{enum {value = true};};
+
+	template<class T> void swap(T &first, T &second){
+		T tmp(first);
+		first = second;
+		second = tmp;
+	};
 }
 
 
