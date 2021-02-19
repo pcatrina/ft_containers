@@ -29,6 +29,18 @@ namespace ft {
 		first = second;
 		second = tmp;
 	};
+//	Predicate class
+	template <class T> class const_pred {
+		const T _value;
+		const_pred();
+	public:
+		const_pred(const T& value) : _value(value) { }
+		bool operator()(const T& x) { return _value == x; }
+	};
+	template <class T> class binary_pred {
+	public:
+		bool operator()(const T& val1, const T& val2) { return val1 == val2; }
+	};
 }
 
 

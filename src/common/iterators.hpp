@@ -4,7 +4,6 @@
 #include <cstddef>
 #include "../list/list_node.hpp"
 #include "utils.hpp"
-#include "reverse_iterator.hpp"
 
 //		Iterator for list - for more information read std::iterator
 //		type: std::bidirectional_iterator_tag
@@ -24,7 +23,7 @@ namespace ft {
 //		You need to add list_node and list_iterator as a friend for
 //		a logical comparison operator
 		template<class >
-		friend class list_node;
+		friend class list;
 
 		template<class >
 		friend class list_iterator;

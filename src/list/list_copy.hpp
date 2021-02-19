@@ -1,5 +1,5 @@
-#ifndef FT_CONTAINERS_LIST_HPP
-#define FT_CONTAINERS_LIST_HPP
+#ifndef FT_CONTAINERS_LIST_COPY_HPP
+#define FT_CONTAINERS_LIST_COPY_HPP
 
 #include "list_node.hpp"
 #include "../common/utils.hpp"
@@ -80,10 +80,10 @@ namespace ft {
 			return const_iterator(_init_node->next);
 		};
 		iterator end() {
-			return iterator(_init_node);
+			return iterator(_init_node->prev);
 		};
 		const_iterator end() const {
-			return const_iterator (_init_node);
+			return const_iterator (_init_node->prev);
 		}
 		reverse_iterator rbegin() {
 			return reverse_iterator(_init_node->prev);
@@ -204,18 +204,9 @@ namespace ft {
 			while (n > _length)
 				pop_back();
 		};
-//		entire list (1)
-		void splice (iterator position, list& x) {
-			splice(position, x, x.begin(), x.end());
-		};
-//		single element (2)
-		void splice (iterator position, list& x, iterator i) {
-			splice(position, x, i, i);
-		};
-//		element range (3)
 		void splice (iterator position, list& x, iterator first, iterator last) {
-			if (*this == x)
-				return;
+//			if (*this == x)
+//				return;
 			node *f = first._p;
 			node *l = last._p;
 			node *p = position._p;
@@ -229,66 +220,14 @@ namespace ft {
 
 			before->next = l;
 			l->prev = before;
-			while (f != p) {
+			while (f != p)
+			{
 				--x._length;
 				++_length;
 				f = f->next;
 			}
 		};
-		void remove (const value_type& val) {
-			 remove_if(ft::const_pred<value_type>(val));
-		};
-		template <class Predicate>
-		void remove_if (Predicate pred) {
-			for (iterator it = begin(); it != end(); )
-			{
-				if (pred(*it))
-				{
-					iterator tmp = it;
-					++it;
-					erase(tmp);
-				}
-				else
-					++it;
-			}
-		};
-		void unique(){
-			unique(ft::binary_pred<value_type>());
-		};
-		template <class BinaryPredicate>
-		void unique (BinaryPredicate binary_pred){
-			if (empty())
-				return;
-			for(iterator prev = begin(), next = ++begin(); next != end();){
-				if (binary_pred(*prev, *next)) {
-					iterator tmp = next;
-					++next;
-					erase(tmp);
-				}
-				else {
-					++prev;
-					++next;
-				}
-			}
-		};
 	};
-//	relational operators
-	template <class T> bool operator== (const list<T>& lhs, const list<T>& rhs) {
-		if (lhs.size() != rhs.size())
-			return false;
-		for (typename list<T>::iterator l_it = lhs.begin(), r_it = rhs.begin(); l_it != lhs.end(); ++l_it, ++r_it){
-			if (!(*l_it == *r_it))
-				return false;
-		}
-		return true;
-	}
-	template <class T> bool operator!= (const list<T>& lhs, const list<T>& rhs){
-		return !(lhs == rhs);
-	}
-	template <class T> bool operator<  (const list<T>& lhs, const list<T>& rhs){
-		typename list<T>::iterator l_it = lhs.begin(), r_it = rhs.begin();
-		for (; l_it != lhs.end() && r_it != rhs.end(); ++l_it, ++r_it);
-	}
 }
 
-#endif //FT_CONTAINERS_LIST_HPP
+#endif //FT_CONTAINERS_LIST_COPY_HPP

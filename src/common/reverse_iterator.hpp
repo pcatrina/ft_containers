@@ -41,8 +41,6 @@ namespace ft {
 		pointer operator->() const {return &(operator*());}
 		reference operator[] (difference_type n) const {return *(*this + n);}
 	};
-
-
 //	(1)
 	template <class Iterator>
 	bool operator== (const reverse_iterator<Iterator>& lhs,
@@ -86,7 +84,6 @@ namespace ft {
 			const reverse_iterator<Iterator>& rev_it) {
 		return reverse_iterator<Iterator>(rev_it.base() - n);
 	}
-
 	template <class Iterator>
 	typename reverse_iterator<Iterator>::difference_type operator- (
 			const reverse_iterator<Iterator>& lhs,
