@@ -297,9 +297,7 @@ namespace ft {
 		template< class Compare >void sort( Compare comp ) {
 			if (empty())
 				return;
-			iterator left = begin();
-			iterator right = --end();
-
+//Place for sort list -->
 		};
 	};
 //	relational operators
