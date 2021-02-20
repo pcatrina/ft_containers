@@ -287,7 +287,22 @@ namespace ft {
 	}
 	template <class T> bool operator<  (const list<T>& lhs, const list<T>& rhs){
 		typename list<T>::iterator l_it = lhs.begin(), r_it = rhs.begin();
-		for (; l_it != lhs.end() && r_it != rhs.end(); ++l_it, ++r_it);
+		for (; l_it != lhs.end() && r_it != rhs.end(); ++l_it, ++r_it){
+			if (*l_it < *r_it)
+				return true;
+			else if (*l_it > *r_it)
+				return false;
+		}
+		return (r_it != rhs.end());
+	}
+	template <class T> bool operator<= (const list<T>& lhs, const list<T>& rhs) {
+		return (!(lhs < rhs));
+	}
+	template <class T> bool operator>  (const list<T>& lhs, const list<T>& rhs) {
+		return (rhs < lhs);
+	}
+	template <class T> bool operator>= (const list<T>& lhs, const list<T>& rhs) {
+		return (!(rhs < lhs));
 	}
 }
 

@@ -89,6 +89,7 @@ int main()
 	}
 	std::cout<<std::endl;
 
+	std::cout<<std::string(10, ' ')<<"unique test\n";
 ft::list<char> list;
 	for (int i = 0; i < 10; i++ )
 	{
@@ -96,6 +97,11 @@ ft::list<char> list;
 	}
 	list.unique();
 	std::cout<<list.size()<<std::endl;
+
+	if (list < ft_list)
+	{
+		return 1;
+	}
 
 	return 0;
 }
