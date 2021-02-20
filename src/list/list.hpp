@@ -271,6 +271,36 @@ namespace ft {
 				}
 			}
 		};
+//		(1)
+		void merge (list& x) {
+			merge(x, ft::less<value_type>());
+		};
+//		(2)
+		template <class Compare> void merge (list& x, Compare comp) {
+			if (*this == x)
+				return;
+			iterator m_it = begin(),  x_it = x.begin();
+			for (; m_it != end() && x_it != x.end();) {
+				if (comp(x_it, m_it)) {
+					iterator tmp = x_it;
+					++x_it;
+					splice(m_it, x, tmp);
+				}
+				else
+					++m_it;
+			}
+			splice(m_it, x, x_it, x.end());
+		};
+		void sort() {
+			sort(ft::less<value_type>());
+		};
+		template< class Compare >void sort( Compare comp ) {
+			if (empty())
+				return;
+			iterator left = begin();
+			iterator right = --end();
+
+		};
 	};
 //	relational operators
 	template <class T> bool operator== (const list<T>& lhs, const list<T>& rhs) {

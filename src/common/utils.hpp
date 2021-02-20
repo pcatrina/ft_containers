@@ -32,7 +32,7 @@ namespace ft {
 //	Predicate class
 	template <class T> class const_pred {
 		const T _value;
-		const_pred();
+		const_pred() {};
 	public:
 		const_pred(const T& value) : _value(value) { }
 		bool operator()(const T& x) { return _value == x; }
@@ -40,6 +40,21 @@ namespace ft {
 	template <class T> class binary_pred {
 	public:
 		bool operator()(const T& val1, const T& val2) { return val1 == val2; }
+	};
+
+	template <class Arg1, class Arg2, class Result>
+	struct binary_function {
+		typedef Arg1 f_argument_type;
+		typedef Arg2 s_argument_type;
+		typedef Result r_type;
+	};
+
+	template <class T> struct greater : binary_function<T,T,bool> {
+		bool operator() (const T&x, const T&y) const {return x>y;}
+	};
+
+	template <class T> struct less : binary_function <T,T,bool> {
+		bool operator() (const T& x, const T& y) const {return x<y;}
 	};
 }
 
