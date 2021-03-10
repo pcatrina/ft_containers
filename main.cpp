@@ -1,45 +1,115 @@
 #include <iostream>
-#include "list.hpp"
-//DELETE
-#include <list>
-#include <string>
+#include "./src/list/list.hpp"
 int main()
 {
-	ft::list<char> ft_list;
-	ft::list<char>::iterator ft_it;
+	ft::list<int> ft_list;
+	ft::list<int>::iterator ft_it;
 
 	ft_it = ft_list.begin();
-	for (size_t  i = 0; i < 26; i++)
+
+	for (size_t  i = 0; i < 10; i++)
 	{
-		ft_list.push_back('a' + i);
+		ft_list.push_back(i);
 		++ft_it;
 		std::cout<<*ft_it;
 	}
-	for (size_t  i = 0; i < 26; i++)
+	std::cout<<std::endl;
+
+	ft_it = ft_list.begin();
+	++ft_it;
+	++ft_it;
+	++ft_it;
+	ft_list.insert(ft_it, 9);
+
+	ft_it = ft_list.begin();
+	for (size_t  i = 0; i < ft_list.size(); i++)
 	{
-		ft_list.push_back('A' + i);
-		++ft_it;
 		std::cout<<*ft_it;
+		++ft_it;
+	}
+	std::cout<<std::endl;
+
+	ft_list.resize(5);
+
+	ft_it = ft_list.begin();
+	for (size_t  i = 0; i < ft_list.size(); i++)
+	{
+		std::cout<<*ft_it;
+		++ft_it;
+	}
+	std::cout<<std::endl;
+
+	ft_list.remove(9);
+	ft_list.remove_if(ft::const_pred<int>(3));
+
+	ft_it = ft_list.begin();
+	for (size_t  i = 0; i < ft_list.size(); i++)
+	{
+		std::cout<<*ft_it;
+		++ft_it;
+	}
+	std::cout<<std::endl;
+
+	ft_list.push_back(2);
+	ft_it = ft_list.begin();
+	for (size_t  i = 0; i < ft_list.size(); i++)
+	{
+		std::cout<<*ft_it;
+		++ft_it;
+	}
+	std::cout<<std::endl;
+
+	ft_list.unique();
+	ft_it = ft_list.begin();
+	for (size_t  i = 0; i < ft_list.size(); i++)
+	{
+		std::cout<<*ft_it;
+		++ft_it;
+	}
+	std::cout<<std::endl;
+//	merge
+
+	ft::list<int> sec_list;
+	ft::list<int>::iterator sec_it;
+
+	sec_it = sec_list.begin();
+
+	for (size_t i = 1; i < 6; i++)
+	{
+		sec_list.push_back(i * 10);
+		++sec_it;
+		std::cout<<' '<<*sec_it;
 	}
 	std::cout<<std::endl;
 
 	ft_list.sort();
+	sec_list.sort();
+	ft_list.merge(sec_list);
 
 	ft_it = ft_list.begin();
-	for (; ft_it !=  ft_list.end(); ++ft_it)
+
+	for (size_t  i = 0; i < ft_list.size(); i++)
 	{
-		std::cout<<*ft_it;
+		std::cout<<' '<<*ft_it;
+		++ft_it;
 	}
 	std::cout<<std::endl;
+
+	std::cout<<sec_list.size()<<std::endl;
 
 	ft_list.reverse();
 
 	ft_it = ft_list.begin();
-	for (; ft_it !=  ft_list.end(); ++ft_it)
+
+	for (size_t  i = 0; i < ft_list.size(); i++)
 	{
-		std::cout<<*ft_it;
+		std::cout<<' '<<*ft_it;
+		++ft_it;
 	}
 	std::cout<<std::endl;
+
+
+
 
 //	std::cout<<std::string(10, ' ')<<"STD output"<<std::endl;
 //
