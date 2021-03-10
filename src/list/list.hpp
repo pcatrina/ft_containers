@@ -199,9 +199,9 @@ namespace ft {
 			ft::swap(_length, x._length);
 		};
 		void resize (size_type n, value_type val = value_type()){
-			while (n < _length)
-				push_back(val);
 			while (n > _length)
+				push_back(val);
+			while (n < _length)
 				pop_back();
 		};
 //		entire list (1)
@@ -283,7 +283,7 @@ namespace ft {
 				return;
 			iterator m_it = begin(),  x_it = x.begin();
 			for (; m_it != end() && x_it != x.end();) {
-				if (comp(x_it, m_it)) {
+				if (comp(*x_it, *m_it)) {
 					iterator tmp = x_it;
 					++x_it;
 					splice(m_it, x, tmp);
