@@ -210,11 +210,13 @@ namespace ft {
 		};
 //		single element (2)
 		void splice (iterator position, list& x, iterator i) {
-			splice(position, x, i, i);
+			iterator next(i);
+			++next;
+			splice(position, x, i, next);
 		};
 //		element range (3)
 		void splice (iterator position, list& x, iterator first, iterator last) {
-			if (*this == x)
+			if (first == last)
 				return;
 			node *f = first._p;
 			node *l = last._p;
@@ -294,11 +296,51 @@ namespace ft {
 		void sort() {
 			sort(ft::less<value_type>());
 		};
-		template< class Compare >void sort( Compare comp ) {
+		template <class Compare>
+		void sort (Compare comp) {
+			if (empty())
+				return ;
+
+			iterator prev = begin();
+			iterator next = ++begin();
+
+			bool swapped = true;
+			while (swapped)
+			{
+				swapped = false;
+				while (next != end())
+				{
+					if (comp(*next, *prev))
+					{
+						splice(prev, *this, next);
+						ft::swap(prev, next);
+						swapped = true;
+					}
+					++prev;
+					++next;
+				}
+				prev = begin();
+				next = ++begin();
+			}
+		}
+		void reverse() {
 			if (empty())
 				return;
-//Place for sort list -->
-		};
+			iterator finish = end();
+			iterator start = begin();
+			iterator next = ++begin();
+			while (next != finish) {
+				while (next != finish) {
+					splice(start, *this, next);
+					ft::swap(start, next);
+					++start;
+					++next;
+				}
+				--finish;
+				start = begin();
+				next = ++begin();
+			}
+		}
 	};
 //	relational operators
 	template <class T> bool operator== (const list<T>& lhs, const list<T>& rhs) {

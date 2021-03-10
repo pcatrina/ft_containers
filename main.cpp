@@ -32,6 +32,15 @@ int main()
 	}
 	std::cout<<std::endl;
 
+	ft_list.reverse();
+
+	ft_it = ft_list.begin();
+	for (; ft_it !=  ft_list.end(); ++ft_it)
+	{
+		std::cout<<*ft_it;
+	}
+	std::cout<<std::endl;
+
 //	std::cout<<std::string(10, ' ')<<"STD output"<<std::endl;
 //
 //	std::list<char> std_std_list;
