@@ -1,7 +1,21 @@
 #include <iostream>
 #include "./src/list/list.hpp"
+#include "./src/vector/vector.hpp"
 int main()
 {
+//	ft::vector<char> ft_vec(1, 'a');
+//	ft::vector<char>::iterator ft_vec_it;
+//	ft::vector<char>::iterator ft_vec_it_sec;
+//
+//	ft_vec.push_back('b');
+//	ft_vec.push_back('c');
+//	ft_vec.push_back('d');
+//	ft_vec.push_back('e');
+//
+//	ft::vector<char> d_vec(ft_vec);
+
+//	*** ft_list ***
+
 	ft::list<int> ft_list;
 	ft::list<int>::iterator ft_it;
 
@@ -109,7 +123,7 @@ int main()
 	std::cout<<std::endl;
 
 
-
+//	STD::LIST
 
 //	std::cout<<std::string(10, ' ')<<"STD output"<<std::endl;
 //

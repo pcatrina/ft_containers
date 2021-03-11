@@ -5,10 +5,12 @@
 #include "../list/list_node.hpp"
 #include "utils.hpp"
 
+namespace ft {
+
 //		Iterator for list - for more information read std::iterator
 //		type: std::bidirectional_iterator_tag
 
-namespace ft {
+//List Iterator
 	template<class T>
 	class list_iterator {
 	public:
