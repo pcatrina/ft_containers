@@ -67,6 +67,9 @@ namespace ft {
 		return !(lhs == rhs);
 	}
 
+//		Iterator for vector - for more information read std::iterator
+//		type: std::random_access_iterator
+
 //	Vector Iterator
 	template<class T> class random_access_iterator {
 	public:
@@ -129,6 +132,14 @@ namespace ft {
 		}
 		reference operator[](difference_type n) const {return *(*this+n);}
 	};
+	template <class U>
+	typename random_access_iterator<U>::difference_type operator- (random_access_iterator<U> &a, random_access_iterator<U>&b){
+		return a - b;
+	}
+	template <class U>
+	random_access_iterator<U> operator+ (typename random_access_iterator<U>::difference_type n,const random_access_iterator<U> & a) {
+		return a + n;
+	}
 	template<class U>
 	bool operator!=(const random_access_iterator<U> &lhs, const random_access_iterator<U> &rhs) {
 		return !(lhs == rhs);
