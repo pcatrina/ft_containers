@@ -209,7 +209,7 @@ namespace ft {
 			}
 		};
 		iterator erase (iterator position) {
-
+			erase(position, position + 1);
 		};
 		iterator erase (iterator first, iterator last) {
 
