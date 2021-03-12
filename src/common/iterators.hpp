@@ -90,15 +90,15 @@ namespace ft {
 		value_type* _p;
 	public:
 		random_access_iterator() : _p(NULL) {}
-		random_access_iterator(const random_access_iterator<value_type> &other) : _p(other) {}
+		random_access_iterator(const random_access_iterator<value_type> &other) : _p(other._p) {}
 		template<class U> random_access_iterator(random_access_iterator<U> const& other, typename
 		ft::if_enable<!ft::is_const<U>::value>::type* = nullptr) : _p(other._p) {}
 		random_access_iterator(value_type *p) : _p(p) {}
 		~random_access_iterator() {}
 
 		const random_access_iterator &operator=(const random_access_iterator &other) {_p=other._p; return *this;}
-		reference operator*() const {return _p;}
-		pointer operator->() const {return &_p;}
+		reference operator*() const {return *_p;}
+		pointer operator->() const {return _p;}
 
 		template<typename U>
 		friend bool operator==(const random_access_iterator<U> &lhs, const random_access_iterator<U> &rhs) {

@@ -14,8 +14,53 @@ int main()
 
 	ft::vector<char> d_vec(ft_vec);
 	d_vec.clear();
-	ft_vec.push_back(4);
-	ft_vec.clear();
+	ft_vec.push_back(48);
+
+	std::cout<<*ft_vec.begin()<<std::endl;
+	ft_vec.push_back('a');
+	std::cout<<ft_vec.size()<<std::endl;
+	for (size_t i = 0; i < ft_vec.size(); i++) {
+		std::cout<<' '<<ft_vec[i];
+	}
+	std::cout<<std::endl;
+
+	ft_vec.resize(15,'l');
+	for (size_t i = 0; i < ft_vec.size(); i++) {
+		std::cout<<' '<<ft_vec[i];
+	}
+	std::cout<<std::endl;
+
+	ft_vec.push_back('X');
+	ft_vec.pop_back();
+	ft_vec.push_back('Y');
+
+	for (size_t i = 0; i < ft_vec.size(); i++) {
+		std::cout<<' '<<ft_vec[i];
+	}
+	std::cout<<std::endl;
+
+	ft_vec.push_back('Z');
+	std::cout<<"size: "<<ft_vec.size()<<std::endl;
+	std::cout<<"capacity: "<<ft_vec.capacity()<<std::endl;
+	std::cout<<"max_size: "<<ft_vec.max_size()<<std::endl;
+	std::cout<<"empty: "<<ft_vec.empty()<<std::endl;
+
+	for(size_t i = 0; i<ft_vec.size(); i++)
+		ft_vec.at(i) = 'a' + i;
+
+	std::cout<< "my vector contains: ";
+	for (size_t i = 0; i<ft_vec.size(); i++)
+		std::cout<<' '<<ft_vec.at(i);
+	std::cout<<'\n';
+
+	std::cout<<"front: "<<ft_vec.front()<<std::endl;
+	std::cout<<"front: "<<ft_vec.back()<<std::endl;
+
+	ft_vec.insert(ft_vec.begin(), 1, 'T');
+	std::cout<< "my vector contains: ";
+	for (size_t i = 0; i<ft_vec.size(); i++)
+		std::cout<<' '<<ft_vec.at(i);
+	std::cout<<'\n';
 
 ////	*** ft_list ***
 //
