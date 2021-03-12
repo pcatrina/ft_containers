@@ -208,6 +208,12 @@ namespace ft {
 				++first;
 			}
 		};
+		iterator erase (iterator position) {
+
+		};
+		iterator erase (iterator first, iterator last) {
+
+		};
 		void clear() {
 			delete [] _arr;
 			_size = 0;
