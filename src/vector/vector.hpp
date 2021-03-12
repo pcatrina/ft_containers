@@ -35,7 +35,13 @@ namespace ft {
 			assign(first, last);
 		};
 		vector (const vector& x): _arr(NULL), _size(0), _capacity(0)
-		{};
+		{
+			value_type* tmp = new value_type[x._size];
+			std::memcpy(tmp, x._arr, x._size* sizeof(value_type));
+			_arr = tmp;
+			_capacity = x._capacity;
+			_size = x._size;
+		};
 		~vector() {delete[] _arr;};
 //		range
 		template <class InputIterator>

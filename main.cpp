@@ -3,124 +3,127 @@
 #include "./src/vector/vector.hpp"
 int main()
 {
-//	ft::vector<char> ft_vec(1, 'a');
-//	ft::vector<char>::iterator ft_vec_it;
-//	ft::vector<char>::iterator ft_vec_it_sec;
+	ft::vector<char> ft_vec(1, 'a');
+	ft::vector<char>::iterator ft_vec_it;
+	ft::vector<char>::iterator ft_vec_it_sec;
+
+	ft_vec.push_back('b');
+	ft_vec.push_back('c');
+	ft_vec.push_back('d');
+	ft_vec.push_back('e');
+
+	ft::vector<char> d_vec(ft_vec);
+	d_vec.clear();
+	ft_vec.push_back(4);
+	ft_vec.clear();
+
+////	*** ft_list ***
 //
-//	ft_vec.push_back('b');
-//	ft_vec.push_back('c');
-//	ft_vec.push_back('d');
-//	ft_vec.push_back('e');
+//	ft::list<int> ft_list;
+//	ft::list<int>::iterator ft_it;
 //
-//	ft::vector<char> d_vec(ft_vec);
-
-//	*** ft_list ***
-
-	ft::list<int> ft_list;
-	ft::list<int>::iterator ft_it;
-
-	ft_it = ft_list.begin();
-
-	for (size_t  i = 0; i < 10; i++)
-	{
-		ft_list.push_back(i);
-		++ft_it;
-		std::cout<<*ft_it;
-	}
-	std::cout<<std::endl;
-
-	ft_it = ft_list.begin();
-	++ft_it;
-	++ft_it;
-	++ft_it;
-	ft_list.insert(ft_it, 9);
-
-	ft_it = ft_list.begin();
-	for (size_t  i = 0; i < ft_list.size(); i++)
-	{
-		std::cout<<*ft_it;
-		++ft_it;
-	}
-	std::cout<<std::endl;
-
-	ft_list.resize(5);
-
-	ft_it = ft_list.begin();
-	for (size_t  i = 0; i < ft_list.size(); i++)
-	{
-		std::cout<<*ft_it;
-		++ft_it;
-	}
-	std::cout<<std::endl;
-
-	ft_list.remove(9);
-	ft_list.remove_if(ft::const_pred<int>(3));
-
-	ft_it = ft_list.begin();
-	for (size_t  i = 0; i < ft_list.size(); i++)
-	{
-		std::cout<<*ft_it;
-		++ft_it;
-	}
-	std::cout<<std::endl;
-
-	ft_list.push_back(2);
-	ft_it = ft_list.begin();
-	for (size_t  i = 0; i < ft_list.size(); i++)
-	{
-		std::cout<<*ft_it;
-		++ft_it;
-	}
-	std::cout<<std::endl;
-
-	ft_list.unique();
-	ft_it = ft_list.begin();
-	for (size_t  i = 0; i < ft_list.size(); i++)
-	{
-		std::cout<<*ft_it;
-		++ft_it;
-	}
-	std::cout<<std::endl;
-//	merge
-
-	ft::list<int> sec_list;
-	ft::list<int>::iterator sec_it;
-
-	sec_it = sec_list.begin();
-
-	for (size_t i = 1; i < 6; i++)
-	{
-		sec_list.push_back(i * 10);
-		++sec_it;
-		std::cout<<' '<<*sec_it;
-	}
-	std::cout<<std::endl;
-
-	ft_list.sort();
-	sec_list.sort();
-	ft_list.merge(sec_list);
-
-	ft_it = ft_list.begin();
-
-	for (size_t  i = 0; i < ft_list.size(); i++)
-	{
-		std::cout<<' '<<*ft_it;
-		++ft_it;
-	}
-	std::cout<<std::endl;
-
-	std::cout<<sec_list.size()<<std::endl;
-
-	ft_list.reverse();
-
-	ft_it = ft_list.begin();
-
-	for (size_t  i = 0; i < ft_list.size(); i++)
-	{
-		std::cout<<' '<<*ft_it;
-		++ft_it;
-	}
-	std::cout<<std::endl;
+//	ft_it = ft_list.begin();
+//
+//	for (size_t  i = 0; i < 10; i++)
+//	{
+//		ft_list.push_back(i);
+//		++ft_it;
+//		std::cout<<*ft_it;
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_it = ft_list.begin();
+//	++ft_it;
+//	++ft_it;
+//	++ft_it;
+//	ft_list.insert(ft_it, 9);
+//
+//	ft_it = ft_list.begin();
+//	for (size_t  i = 0; i < ft_list.size(); i++)
+//	{
+//		std::cout<<*ft_it;
+//		++ft_it;
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_list.resize(5);
+//
+//	ft_it = ft_list.begin();
+//	for (size_t  i = 0; i < ft_list.size(); i++)
+//	{
+//		std::cout<<*ft_it;
+//		++ft_it;
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_list.remove(9);
+//	ft_list.remove_if(ft::const_pred<int>(3));
+//
+//	ft_it = ft_list.begin();
+//	for (size_t  i = 0; i < ft_list.size(); i++)
+//	{
+//		std::cout<<*ft_it;
+//		++ft_it;
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_list.push_back(2);
+//	ft_it = ft_list.begin();
+//	for (size_t  i = 0; i < ft_list.size(); i++)
+//	{
+//		std::cout<<*ft_it;
+//		++ft_it;
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_list.unique();
+//	ft_it = ft_list.begin();
+//	for (size_t  i = 0; i < ft_list.size(); i++)
+//	{
+//		std::cout<<*ft_it;
+//		++ft_it;
+//	}
+//	std::cout<<std::endl;
+////	merge
+//
+//	ft::list<int> sec_list;
+//	ft::list<int>::iterator sec_it;
+//
+//	sec_it = sec_list.begin();
+//
+//	for (size_t i = 1; i < 6; i++)
+//	{
+//		sec_list.push_back(i * 10);
+//		++sec_it;
+//		std::cout<<' '<<*sec_it;
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_list.sort();
+//	sec_list.sort();
+//	ft_list.merge(sec_list);
+//
+//	ft_it = ft_list.begin();
+//
+//	for (size_t  i = 0; i < ft_list.size(); i++)
+//	{
+//		std::cout<<' '<<*ft_it;
+//		++ft_it;
+//	}
+//	std::cout<<std::endl;
+//
+//	std::cout<<sec_list.size()<<std::endl;
+//
+//	ft_list.reverse();
+//
+//	ft_it = ft_list.begin();
+//
+//	for (size_t  i = 0; i < ft_list.size(); i++)
+//	{
+//		std::cout<<' '<<*ft_it;
+//		++ft_it;
+//	}
+//	std::cout<<std::endl;
 
 
 //	STD::LIST
