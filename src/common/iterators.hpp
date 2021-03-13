@@ -121,15 +121,15 @@ namespace ft {
 			return tmp;
 		}
 		random_access_iterator& operator+=(difference_type n) {_p += n; return *this;}
-		random_access_iterator& operator+ (difference_type n) const {
-			random_access_iterator tmp;
-			*this += n;
+		random_access_iterator operator+ (difference_type n) {
+			random_access_iterator tmp(*this);
+			tmp += n;
 			return tmp;
 		}
 		random_access_iterator& operator-=(difference_type n) {_p -= n; return *this;}
-		random_access_iterator& operator- (difference_type n) {
-			random_access_iterator tmp;
-			*this -= n;
+		random_access_iterator operator- (difference_type n) {
+			random_access_iterator tmp(*this);
+			tmp -= n;
 			return tmp;
 		}
 		reference operator[](difference_type n) const {return *(*this+n);}

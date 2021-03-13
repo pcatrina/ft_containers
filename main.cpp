@@ -54,13 +54,43 @@ int main()
 	std::cout<<'\n';
 
 	std::cout<<"front: "<<ft_vec.front()<<std::endl;
-	std::cout<<"front: "<<ft_vec.back()<<std::endl;
+	std::cout<<"back: "<<ft_vec.back()<<std::endl;
 
 	ft_vec.insert(ft_vec.begin(), 1, 'T');
 	std::cout<< "my vector contains: ";
 	for (size_t i = 0; i<ft_vec.size(); i++)
 		std::cout<<' '<<ft_vec.at(i);
 	std::cout<<'\n';
+
+	ft_vec.erase(ft_vec.begin());
+	for (size_t i = 0; i < ft_vec.size(); i++) {
+		std::cout<<' '<<ft_vec[i];
+	}
+	std::cout<<std::endl;
+
+	for (size_t i = 0; i < d_vec.size(); i++) {
+		std::cout<<' '<<d_vec[i];
+	}
+	std::cout<<std::endl;
+
+	ft_vec.swap(d_vec);
+
+	for (size_t i = 0; i < d_vec.size(); i++) {
+		std::cout<<' '<<d_vec[i];
+	}
+	std::cout<<std::endl;
+
+	d_vec.swap(d_vec);
+	d_vec.swap(ft_vec);
+	for (size_t i = 0; i < d_vec.size(); i++) {
+		std::cout<<' '<<d_vec[i];
+	}
+	std::cout<<std::endl;
+
+	if (ft_vec < d_vec)
+		std::cout<<'Y'<<std::endl;
+	else
+		std::cout<<'N'<<std::endl;
 
 ////	*** ft_list ***
 //

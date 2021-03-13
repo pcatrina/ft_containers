@@ -209,16 +209,79 @@ namespace ft {
 			}
 		};
 		iterator erase (iterator position) {
-			erase(position, position + 1);
+			return erase(position, position + 1);
 		};
 		iterator erase (iterator first, iterator last) {
-
+			for (; last != end(); ++last, ++first) {
+				*first = *last;
+			}
+			iterator it = first;
+			for (;it != last; ++it)
+				--_size;
+			return first;
+		};
+		void swap (vector& x) {
+			if (this != &x) {
+				ft::swap(_size, x._size);
+				ft::swap(_arr, x._arr);
+				ft::swap(_capacity, x._capacity);
+			}
 		};
 		void clear() {
 			delete [] _arr;
 			_size = 0;
 			_arr = new value_type[_capacity];
 		};
+	};
+//	(1)
+	template <class T>
+	bool operator==(const vector<T>& lhs, const vector<T>& rhs) {
+		if (lhs.size() != rhs.size())
+			return false;
+		typename vector<T>::const_iterator lit = lhs.begin();
+		typename vector<T>::const_iterator rit = rhs.begin();
+		for(; lit != lhs.end(); ++lit, ++rit) {
+			if (*lit != *rit)
+				return false;
+		}
+		return true;
+	};
+//	(2)
+	template <class T>
+	bool operator!= (const vector<T>& lhs, const vector<T>& rhs) {
+		return !(lhs==rhs);
+	};
+//	(3)
+	template <class T>
+	bool operator<  (const vector<T>& lhs, const vector<T>& rhs) {
+		typename vector<T>::const_iterator lit = lhs.begin();
+		typename vector<T>::const_iterator rit = rhs.begin();
+		for (; lit != lhs.end() && rit != rhs.end(); ++lit, ++rit) {
+			if (*lit < *rit)
+				return true;
+			else if (*rit < *lit)
+				return false;
+		}
+		return (rit != rhs.end());
+	};
+//	(4)
+	template <class T>
+	bool operator<= (const vector<T>& lhs, const vector<T>& rhs) {
+		return !(rhs < lhs);
+	};
+//	(5)
+	template <class T>
+	bool operator>  (const vector<T>& lhs, const vector<T>& rhs) {
+		return !(rhs < lhs);
+	};
+//	(6)
+	template <class T>
+	bool operator>= (const vector<T>& lhs, const vector<T>& rhs) {
+		return !(lhs < rhs);
+	};
+	template <class T>
+	void swap (vector<T>& x, vector<T>& y) {
+		x.swap(y);
 	};
 }
 
