@@ -15,8 +15,55 @@ namespace ft {
 	struct bidirectional_iterator_tag : public forward_iterator_tag {};
 	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
-	template<bool _bool, class T = void> struct if_enable {};
-	template<class T> struct if_enable<true, T> 		{typedef T type; };
+	template<bool Cond, class T = void> struct enable_if {};
+	template<class T> struct enable_if<true, T> {typedef T type;};
+
+	template <class T> struct is_type { typedef void type; };
+
+	template <class InpIter>
+	struct is_pointer {
+		template <class T>
+		static char is_ptr(T *);
+
+		static double is_ptr(...);
+
+		static InpIter t;
+		enum { value = sizeof(is_ptr(t)) == sizeof(char) };
+
+	};
+
+	template <class Iter>
+	struct is_iterator {
+		template <class T>
+		static char is_iter(typename ft::is_type<typename T::value_type>::type*,
+							typename ft::is_type<typename T::difference_type>::type*,
+							typename ft::is_type<typename T::pointer>::type*,
+							typename ft::is_type<typename T::reference>::type*,
+							typename ft::is_type<typename T::iterator_category>::type*);
+
+		template <class>
+		static double is_iter(...);
+
+		enum { value = (sizeof(is_iter<Iter>(NULL, NULL, NULL, NULL, NULL)) == sizeof(char)
+						|| is_pointer<Iter>::value)
+		};
+	};
+
+	template <class InputIter>
+	struct is_input_iterator
+	{
+		template <class T>
+		static char is_input_iter(typename T::iterator_category*);
+
+		template <class>
+		static double is_input_iter(...);
+
+		static ft::output_iterator_tag* output_iterator;
+
+		enum { value = ((is_iterator<InputIter>::value
+						 && !(sizeof(is_input_iter<InputIter>(output_iterator)) == sizeof(char))))
+		};
+	};
 
 	template<class T> struct remove_const				{typedef T type;};
 	template<class T> struct remove_const<const T>	{typedef T type;};

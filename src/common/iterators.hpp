@@ -37,7 +37,7 @@ namespace ft {
 		list_iterator(const list_iterator<value_type> &other) : _p(other._p) {}
 		list_iterator(node *p) : _p(p) {}
 		template <class U>
-		list_iterator(list_iterator<U> const& other, typename ft::if_enable<!ft::is_const<U>::value>::type* = nullptr)
+		list_iterator(list_iterator<U> const& other, typename ft::enable_if<!ft::is_const<U>::value>::type* = nullptr)
 		: _p(other._p) {}
 		~list_iterator() {}
 
@@ -92,7 +92,7 @@ namespace ft {
 		random_access_iterator() : _p(NULL) {}
 		random_access_iterator(const random_access_iterator<value_type> &other) : _p(other._p) {}
 		template<class U> random_access_iterator(random_access_iterator<U> const& other, typename
-		ft::if_enable<!ft::is_const<U>::value>::type* = nullptr) : _p(other._p) {}
+		ft::enable_if<!ft::is_const<U>::value>::type* = NULL) : _p(other._p) {}
 		random_access_iterator(value_type *p) : _p(p) {}
 		~random_access_iterator() {}
 
@@ -112,13 +112,13 @@ namespace ft {
 		random_access_iterator& operator++(int) { //postfix inc
 			random_access_iterator tmp = *this;
 			++(*this);
-			return tmp;
+			return *this;
 		}
 		random_access_iterator& operator--(){--_p; return *this;} //prefix dec
 		random_access_iterator& operator--(int) { //postfix dec
 			random_access_iterator tmp = *this;
 			--(*this);
-			return tmp;
+			return *this;
 		}
 		random_access_iterator& operator+=(difference_type n) {_p += n; return *this;}
 		random_access_iterator operator+ (difference_type n) {

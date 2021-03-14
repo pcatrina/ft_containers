@@ -93,6 +93,11 @@ int main()
 		std::cout<<'N'<<std::endl;
 
 ////	*** ft_list ***
+
+
+//	ft::list<std::string> list_string(9999);
+//	ft::list<ft::vector<std::string> > one_list_string(9999);
+//
 //
 //	ft::list<int> ft_list;
 //	ft::list<int>::iterator ft_it;

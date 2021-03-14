@@ -30,7 +30,8 @@ namespace ft {
 		explicit vector (size_type n, const value_type& val = value_type()): _arr(NULL), _size(0), _capacity(0) {
 			assign(n, val);
 		};
-		template <class InputIterator> vector (InputIterator first, InputIterator last)
+		template <class InputIterator> vector (InputIterator first, InputIterator last,
+				typename enable_if<is_input_iterator<InputIterator>::value>::type* = 0)
 		:_arr(NULL), _size(0), _capacity(0) {
 			assign(first, last);
 		};
@@ -42,7 +43,7 @@ namespace ft {
 			_capacity = x._capacity;
 			_size = x._size;
 		};
-		~vector() {delete[] _arr;};
+		~vector() {delete [] _arr;};
 		vector& operator= (const vector& x) {
 			if (this == &x)
 				return *this;
@@ -129,13 +130,15 @@ namespace ft {
 //		Modifiers:
 //		range
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last) {
+		void assign (InputIterator first, InputIterator last,
+		typename enable_if<is_input_iterator<InputIterator>::value>::type* = 0) {
 			clear();
 			size_type n = 0;
 			InputIterator tmp = first;
 			for (;tmp != last;++tmp)
 				++n;
 			reserve(n);
+			tmp = first;
 			for (; tmp != last; ++tmp)
 				push_back(*tmp);
 		};
@@ -177,6 +180,7 @@ namespace ft {
 					reserve(_size + n);
 				else
 					reserve(_capacity * 2);
+				position = iterator(_arr + i);
 			}
 			std::memmove(position._p + n, position._p, (_size - i) * sizeof(value_type));
 			_size += n;
@@ -187,18 +191,20 @@ namespace ft {
 		};
 //		range (3)
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last) {
+		void insert (iterator position, InputIterator first, InputIterator last,
+		typename enable_if<is_input_iterator<InputIterator>::value>::type* = 0) {
 			size_type  n = 0;
 			for (InputIterator it = first; it != last; ++it)
 				++n;
 			size_type  i = 0;
-			for (InputIterator it = begin(); it != position; ++it)
+			for (iterator it = begin(); it != position; ++it)
 				++i;
 			if (_size + n > _capacity) {
 				if (_size + n > _capacity * 2)
 					reserve(_size + n);
 				else
 					reserve(_capacity * 2);
+				position = iterator(_arr + i);
 			}
 			std::memmove(position._p + n, position._p, (_size - i) * sizeof(value_type));
 			_size += n;
@@ -272,13 +278,14 @@ namespace ft {
 //	(5)
 	template <class T>
 	bool operator>  (const vector<T>& lhs, const vector<T>& rhs) {
-		return !(rhs < lhs);
+		return !(lhs <= rhs);
 	};
 //	(6)
 	template <class T>
 	bool operator>= (const vector<T>& lhs, const vector<T>& rhs) {
 		return !(lhs < rhs);
 	};
+//	swap
 	template <class T>
 	void swap (vector<T>& x, vector<T>& y) {
 		x.swap(y);
