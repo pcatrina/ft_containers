@@ -1,6 +1,8 @@
 #include <iostream>
 #include "./src/list/list.hpp"
+#include "./src/stack/stack.hpp"
 #include "./src/vector/vector.hpp"
+#include "./src/queue/queue.hpp"
 int main()
 {
 	ft::vector<char> ft_vec(1, 'a');
@@ -92,6 +94,16 @@ int main()
 	else
 		std::cout<<'N'<<std::endl;
 
+////	*** ft_stack ***
+
+ft::stack<int> first;
+ft::stack<int> second(first);
+ft::stack<int, ft::vector<int> > third;
+
+ft::queue<int> my_queue;
+
+my_queue.push(10);
+
 ////	*** ft_list ***
 
 
@@ -103,7 +115,7 @@ int main()
 //	ft::list<int>::iterator ft_it;
 //
 //	ft_it = ft_list.begin();
-//
+//d
 //	for (size_t  i = 0; i < 10; i++)
 //	{
 //		ft_list.push_back(i);

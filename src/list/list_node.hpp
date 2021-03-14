@@ -9,7 +9,7 @@ namespace ft
 	public:
 		list_node *prev;
 		list_node *next;
-		T* _data;
+		T _data;
 	public:
 		list_node() : prev(nullptr), next(nullptr), _data(0) {};
 		list_node(T data) : prev(nullptr), next(nullptr), _data(0) {

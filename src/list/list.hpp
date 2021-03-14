@@ -17,8 +17,8 @@ namespace ft {
 		typedef const T&					const_reference;
 		typedef T*							pointer;
 		typedef const T*					const_pointer;
-		typedef	list_iterator<value_type>	iterator;
-		typedef const list_iterator<value_type> const_iterator;
+		typedef	bidirectional_iterator<value_type>	iterator;
+		typedef const bidirectional_iterator<value_type> const_iterator;
 		typedef ft::reverse_iterator<iterator>	reverse_iterator;
 		typedef const ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		typedef std::ptrdiff_t 				difference_type;
@@ -43,7 +43,8 @@ namespace ft {
 		};
 //			range (3)
 		template <class InputIterator>
-		list (InputIterator _begin, InputIterator _end) : _init_node(nullptr), _length(0) {
+		list (InputIterator _begin, InputIterator _end,
+			typename enable_if<is_input_iterator<InputIterator>::value>::type* = 0): _init_node(nullptr), _length(0) {
 			_init_node = new list_node<T>;
 			_init_node->next = _init_node;
 			_init_node->prev = _init_node;
@@ -104,14 +105,15 @@ namespace ft {
 			return (std::numeric_limits<size_type>::max() / (sizeof(node)));
 		};
 //			Element access:
-		reference front() {return _init_node->next->data;};
-		const_reference front() const {return _init_node->next->data;};
-		reference back() {return _init_node->prev->data;};
-		const_reference back() const {return _init_node->prev->data;};
+		reference front() {return _init_node->next->_data;};
+		const_reference front() const {return _init_node->next->_data;};
+		reference back() {return _init_node->prev->_data;};
+		const_reference back() const {return _init_node->prev->_data;};
 //			Modifiers:
 //			range (1)
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last) {
+		void assign (InputIterator first, InputIterator last,
+			   typename enable_if<is_input_iterator<InputIterator>::value>::type* = 0) {
 			clear();
 			for(; first != last; first++)
 				push_back(*first);
@@ -174,7 +176,8 @@ namespace ft {
 		};
 //			range (3)
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last){
+		void insert (iterator position, InputIterator first, InputIterator last,
+			typename enable_if<is_input_iterator<InputIterator>::value>::type* = 0){
 			for( ;first != last; first++)
 				insert(position, *first);
 		};

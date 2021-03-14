@@ -12,7 +12,7 @@ namespace ft {
 
 //List Iterator
 	template<class T>
-	class list_iterator {
+	class bidirectional_iterator {
 	public:
 //		All possible member_types
 		typedef T								value_type;
@@ -22,50 +22,50 @@ namespace ft {
 		typedef ft::bidirectional_iterator_tag	iterator_category;
 		typedef list_node<typename ft::remove_const<T>::type>	node;
 
-//		You need to add list_node and list_iterator as a friend for
+//		You need to add list_node and bidirectional_iterator as a friend for
 //		a logical comparison operator
 		template<class >
 		friend class list;
 
 		template<class >
-		friend class list_iterator;
+		friend class bidirectional_iterator;
 
 	private:
 		node*		_p;
 	public:
-		list_iterator() : _p(nullptr) {}
-		list_iterator(const list_iterator<value_type> &other) : _p(other._p) {}
-		list_iterator(node *p) : _p(p) {}
+		bidirectional_iterator() : _p(nullptr) {}
+		bidirectional_iterator(const bidirectional_iterator<value_type> &other) : _p(other._p) {}
+		bidirectional_iterator(node *p) : _p(p) {}
 		template <class U>
-		list_iterator(list_iterator<U> const& other, typename ft::enable_if<!ft::is_const<U>::value>::type* = nullptr)
+		bidirectional_iterator(bidirectional_iterator<U> const& other, typename ft::enable_if<!ft::is_const<U>::value>::type* = nullptr)
 		: _p(other._p) {}
-		~list_iterator() {}
+		~bidirectional_iterator() {}
 
-		const list_iterator &operator=(const list_iterator &other) {_p=other._p; return *this;}
-		reference operator*() const {return _p->data;}
-		pointer operator->() const {return &_p->data;}
+		const bidirectional_iterator &operator=(const bidirectional_iterator &other) {_p=other._p; return *this;}
+		reference operator*() const {return _p->_data;}
+		pointer operator->() const {return &_p->_data;}
 
 		template<typename U>
-		friend bool operator==(const list_iterator<U> &lhs, const list_iterator<U> &rhs) {
+		friend bool operator==(const bidirectional_iterator<U> &lhs, const bidirectional_iterator<U> &rhs) {
 			return lhs._p == rhs._p;
 		}
 
-		list_iterator& operator++() {_p = _p->next; return *this;};
-		list_iterator  operator++(int) {
-			list_iterator temp = *this;
+		bidirectional_iterator& operator++() {_p = _p->next; return *this;};
+		bidirectional_iterator  operator++(int) {
+			bidirectional_iterator temp = *this;
 			++(*this);
 			return temp;
 		}
 
-		list_iterator& operator--() {_p = _p->prev; return *this;};
-		list_iterator  operator--(int) {
-			list_iterator temp = *this;
+		bidirectional_iterator& operator--() {_p = _p->prev; return *this;};
+		bidirectional_iterator  operator--(int) {
+			bidirectional_iterator temp = *this;
 			--(*this);
 			return temp;
 		}
 	};
 	template<typename U>
-	bool operator!=(const list_iterator<U> &lhs, const list_iterator<U> &rhs) {
+	bool operator!=(const bidirectional_iterator<U> &lhs, const bidirectional_iterator<U> &rhs) {
 		return !(lhs == rhs);
 	}
 
@@ -82,7 +82,7 @@ namespace ft {
 		typedef T&				reference;
 		typedef ft::random_access_iterator_tag	iterator_category;
 
-//		You need to add list_node and list_iterator as a friend for
+//		You need to add list_node and bidirectional_iterator as a friend for
 //		a logical comparison operator
 		template<class > friend class vector;
 		template<class > friend class random_access_iterator;
