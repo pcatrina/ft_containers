@@ -4,12 +4,12 @@
 #include "../common/utils.hpp"
 #include "../common/iterators.hpp"
 #include "../common/reverse_iterator.hpp"
-#include "../list/list.hpp"
+#include "../vector/vector.hpp"
 #include <limits>
 #include <cstddef>
 
 namespace ft {
-	template <class T, class Container = ft::list<T> > class stack {
+	template <class T, class Container = ft::vector<T> > class stack {
 	public:
 		typedef T value_type;
  		typedef Container container_type;

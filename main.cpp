@@ -3,109 +3,138 @@
 #include "./src/stack/stack.hpp"
 #include "./src/vector/vector.hpp"
 #include "./src/queue/queue.hpp"
+#include "./src/deque/deque.hpp"
 int main()
 {
-	ft::vector<char> ft_vec(1, 'a');
-	ft::vector<char>::iterator ft_vec_it;
-	ft::vector<char>::iterator ft_vec_it_sec;
+//	Deque
 
-	ft_vec.push_back('b');
-	ft_vec.push_back('c');
-	ft_vec.push_back('d');
-	ft_vec.push_back('e');
-
-	ft::vector<char> d_vec(ft_vec);
-	d_vec.clear();
-	ft_vec.push_back(48);
-
-	std::cout<<*ft_vec.begin()<<std::endl;
-	ft_vec.push_back('a');
-	std::cout<<ft_vec.size()<<std::endl;
-	for (size_t i = 0; i < ft_vec.size(); i++) {
-		std::cout<<' '<<ft_vec[i];
+	ft::deque<std::string> my_deque(5, "Hi");
+	for (size_t i = 0; i != my_deque.size(); ++i) {
+		std::cout<<' '<<my_deque[i];
 	}
-	std::cout<<std::endl;
+	std::cout<<'\n';
+	ft::deque<std::string> my_doub_deque(my_deque);
 
-	ft_vec.resize(15,'l');
-	for (size_t i = 0; i < ft_vec.size(); i++) {
-		std::cout<<' '<<ft_vec[i];
+	for (size_t i = 0; i != my_doub_deque.size(); ++i) {
+		std::cout<<' '<<my_doub_deque[i];
 	}
-	std::cout<<std::endl;
-
-	ft_vec.push_back('X');
-	ft_vec.pop_back();
-	ft_vec.push_back('Y');
-
-	for (size_t i = 0; i < ft_vec.size(); i++) {
-		std::cout<<' '<<ft_vec[i];
-	}
-	std::cout<<std::endl;
-
-	ft_vec.push_back('Z');
-	std::cout<<"size: "<<ft_vec.size()<<std::endl;
-	std::cout<<"capacity: "<<ft_vec.capacity()<<std::endl;
-	std::cout<<"max_size: "<<ft_vec.max_size()<<std::endl;
-	std::cout<<"empty: "<<ft_vec.empty()<<std::endl;
-
-	for(size_t i = 0; i<ft_vec.size(); i++)
-		ft_vec.at(i) = 'a' + i;
-
-	std::cout<< "my vector contains: ";
-	for (size_t i = 0; i<ft_vec.size(); i++)
-		std::cout<<' '<<ft_vec.at(i);
 	std::cout<<'\n';
 
-	std::cout<<"front: "<<ft_vec.front()<<std::endl;
-	std::cout<<"back: "<<ft_vec.back()<<std::endl;
+	ft::deque<std::string>::iterator d_it;
 
-	ft_vec.insert(ft_vec.begin(), 1, 'T');
-	std::cout<< "my vector contains: ";
-	for (size_t i = 0; i<ft_vec.size(); i++)
-		std::cout<<' '<<ft_vec.at(i);
-	std::cout<<'\n';
+	std::cout<<my_deque.max_size()<<'\n';
 
-	ft_vec.erase(ft_vec.begin());
-	for (size_t i = 0; i < ft_vec.size(); i++) {
-		std::cout<<' '<<ft_vec[i];
-	}
-	std::cout<<std::endl;
 
-	for (size_t i = 0; i < d_vec.size(); i++) {
-		std::cout<<' '<<d_vec[i];
-	}
-	std::cout<<std::endl;
-
-	ft_vec.swap(d_vec);
-
-	for (size_t i = 0; i < d_vec.size(); i++) {
-		std::cout<<' '<<d_vec[i];
-	}
-	std::cout<<std::endl;
-
-	d_vec.swap(d_vec);
-	d_vec.swap(ft_vec);
-	for (size_t i = 0; i < d_vec.size(); i++) {
-		std::cout<<' '<<d_vec[i];
-	}
-	std::cout<<std::endl;
-
-	if (ft_vec < d_vec)
-		std::cout<<'Y'<<std::endl;
-	else
-		std::cout<<'N'<<std::endl;
-
-////	*** ft_stack ***
-
+//	ft::vector<char> ft_vec(1, 'a');
+//	ft::vector<char>::iterator ft_vec_it;
+//	ft::vector<char>::iterator ft_vec_it_sec;
+//
+//	ft_vec.push_back('b');
+//	ft_vec.push_back('c');
+//	ft_vec.push_back('d');
+//	ft_vec.push_back('e');
+//
+//	ft::vector<char> d_vec(ft_vec);
+//	d_vec.clear();
+//	ft_vec.push_back(48);
+//
+//	std::cout<<*ft_vec.begin()<<std::endl;
+//	ft_vec.push_back('a');
+//	std::cout<<ft_vec.size()<<std::endl;
+//	for (size_t i = 0; i < ft_vec.size(); i++) {
+//		std::cout<<' '<<ft_vec[i];
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_vec.resize(15,'l');
+//	for (size_t i = 0; i < ft_vec.size(); i++) {
+//		std::cout<<' '<<ft_vec[i];
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_vec.push_back('X');
+//	ft_vec.pop_back();
+//	ft_vec.push_back('Y');
+//
+//	for (size_t i = 0; i < ft_vec.size(); i++) {
+//		std::cout<<' '<<ft_vec[i];
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_vec.push_back('Z');
+//	std::cout<<"size: "<<ft_vec.size()<<std::endl;
+//	std::cout<<"capacity: "<<ft_vec.capacity()<<std::endl;
+//	std::cout<<"max_size: "<<ft_vec.max_size()<<std::endl;
+//	std::cout<<"empty: "<<ft_vec.empty()<<std::endl;
+//
+//	for(size_t i = 0; i<ft_vec.size(); i++)
+//		ft_vec.at(i) = 'a' + i;
+//
+//	std::cout<< "my vector contains: ";
+//	for (size_t i = 0; i<ft_vec.size(); i++)
+//		std::cout<<' '<<ft_vec.at(i);
+//	std::cout<<'\n';
+//
+//	std::cout<<"front: "<<ft_vec.front()<<std::endl;
+//	std::cout<<"back: "<<ft_vec.back()<<std::endl;
+//
+//	ft_vec.insert(ft_vec.begin(), 1, 'T');
+//	std::cout<< "my vector contains: ";
+//	for (size_t i = 0; i<ft_vec.size(); i++)
+//		std::cout<<' '<<ft_vec.at(i);
+//	std::cout<<'\n';
+//
+//	ft_vec.erase(ft_vec.begin());
+//	for (size_t i = 0; i < ft_vec.size(); i++) {
+//		std::cout<<' '<<ft_vec[i];
+//	}
+//	std::cout<<std::endl;
+//
+//	for (size_t i = 0; i < d_vec.size(); i++) {
+//		std::cout<<' '<<d_vec[i];
+//	}
+//	std::cout<<std::endl;
+//
+//	ft_vec.swap(d_vec);
+//
+//	for (size_t i = 0; i < d_vec.size(); i++) {
+//		std::cout<<' '<<d_vec[i];
+//	}
+//	std::cout<<std::endl;
+//
+//	d_vec.swap(d_vec);
+//	d_vec.swap(ft_vec);
+//	for (size_t i = 0; i < d_vec.size(); i++) {
+//		std::cout<<' '<<d_vec[i];
+//	}
+//	std::cout<<std::endl;
+//
+//	if (ft_vec < d_vec)
+//		std::cout<<'Y'<<std::endl;
+//	else
+//		std::cout<<'N'<<std::endl;
+//
+//////	*** ft_stack ***
+//
 ft::stack<int> first;
 ft::stack<int> second(first);
-ft::stack<int, ft::vector<int> > third;
-
-ft::queue<int> my_queue;
-
-my_queue.push(10);
+ft::stack<int, ft::list<int> > third;
+//
+//ft::queue<int> my_queue;
+//my_queue.push(10);
+//my_queue.push(11);
+//my_queue.push(12);
+//my_queue.push(13);
+//
+//while (!my_queue.empty()) {
+//	std::cout<<my_queue.back()<<std::endl;
+//	my_queue.pop();
+//}
+//
+//
+//my_queue.push(10);
 
 ////	*** ft_list ***
-
 
 //	ft::list<std::string> list_string(9999);
 //	ft::list<ft::vector<std::string> > one_list_string(9999);

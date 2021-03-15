@@ -35,7 +35,7 @@ namespace ft {
 			_init_node->prev = _init_node;
 		};
 //			fill (2)
-		explicit list (size_type n, const value_type  &data = value_type()) : _length(0), _init_node(nullptr) {
+		explicit list (size_type n, const value_type  &data = value_type()) :_init_node(nullptr), _length(0) {
 			_init_node = new list_node<T>;
 			_init_node->next = _init_node;
 			_init_node->prev = _init_node;
