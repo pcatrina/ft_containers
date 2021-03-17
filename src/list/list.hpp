@@ -77,10 +77,7 @@ namespace ft {
 
 			const_iterator begin = other.begin();
 			const_iterator end = other.end();
-			while (begin != end){
-				push_front(*begin);
-				++begin;
-			}
+			assign(begin, end);
 		};
 //			Destructor
 		~list() {
@@ -411,7 +408,7 @@ namespace ft {
 		for (; l_it != lhs.end() && r_it != rhs.end(); ++l_it, ++r_it){
 			if (*l_it < *r_it)
 				return true;
-			else if (*l_it > *r_it)
+			else if (*r_it < *l_it)
 				return false;
 		}
 		return (r_it != rhs.end());
