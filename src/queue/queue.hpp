@@ -35,7 +35,7 @@ namespace ft
 
 		void push(const value_type &val) { _cntr.push_back(val); };
 
-		void pop() { _cntr.pop_back(); };
+		void pop() { _cntr.pop_front(); };
 		//	(1)
 		friend bool operator== (const queue<T,Container>& lhs, const queue<T,Container>& rhs) {
 			return (lhs._cntr == rhs._cntr);

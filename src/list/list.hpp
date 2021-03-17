@@ -59,25 +59,34 @@ namespace ft {
 		};
 //			range (3)
 		template <class InputIterator>
-		list (InputIterator _begin, InputIterator _end,
-			typename enable_if<is_input_iterator<InputIterator>::value>::type* = 0): _init_node(nullptr), _length(0) {
-			_init_node = new list_node<T>;
+		list (InputIterator _begin, InputIterator _end,  const allocator_type& alloc =
+		allocator_type(), typename enable_if<is_input_iterator<InputIterator>::value>::type* = 0)
+		:_alloc(alloc), _init_node(nullptr), _length(0) {
+			_init_node = _node_alloc.allocate(1);
+			_node_alloc.construct(_init_node, list_node<value_type>());
 			_init_node->next = _init_node;
 			_init_node->prev = _init_node;
 			assign(_begin, _end);
 		};
 //			copy (4)
-		list(const list &other) : _init_node(nullptr), _length(0) {
-			_init_node = new list_node<T>;
-			_init_node->next = _init_node;
+		list(const list &other): _alloc(other._alloc), _init_node(nullptr), _length (0) {
+			_init_node = _node_alloc.allocate(1);
+			_node_alloc.construct(_init_node, list_node<value_type>());
 			_init_node->prev = _init_node;
+			_init_node->next = _init_node;
 
-			*this = other;
+			const_iterator begin = other.begin();
+			const_iterator end = other.end();
+			while (begin != end){
+				push_front(*begin);
+				++begin;
+			}
 		};
 //			Destructor
 		~list() {
 			clear();
-			delete _init_node;
+			_node_alloc.destroy(_init_node);
+			_node_alloc.deallocate(_init_node, 1);
 		};
 //			operator=
 		list &operator=(const list<T> &other) {
@@ -167,8 +176,14 @@ namespace ft {
 		};
 		void pop_front(){
 			node *tmp = _init_node->next;
-			_init_node->next->prev = _init_node;
-			_init_node->next = _init_node->next->next;
+			if (tmp->prev == _init_node)
+				_init_node->next = tmp->next;
+			else
+				tmp->prev->next = tmp->next;
+			if (tmp->next == _init_node)
+				_init_node->prev = tmp->prev;
+			else
+				tmp->next->prev = tmp->prev;
 			_node_alloc.destroy(tmp);
 			_node_alloc.deallocate(tmp, 1);
 			_length -= 1;
