@@ -7,40 +7,45 @@
 #include <limits>
 #include <cstddef>
 
+
 namespace ft {
-	template<class Key, class T, template<class U> class Allocator = allocator> class map {
+	template < class Key, class T, class Compare = ft::less<Key>, class Alloc = std::allocator<ft::pair<const Key,T> > >
+	class map
+	{
 	public:
 		typedef Key key_type;
 		typedef T mapped_type;
-		typedef pair<const Key, T> value_type;
+		typedef ft::pair<const Key, T> value_type;
 		typedef ft::less<key_type> key_compare;
-//		value_compare	Nested function class to compare elements	see value_comp
-		typedef bidirectional_iterator<value_type> iterator;
-		typedef const bidirectional_iterator<value_type> const_iterator;
+		typedef ft::less<value_type> value_compare;
+		typedef Alloc allocator_type;
+		typedef typename allocator_type::reference reference;
+		typedef typename allocator_type::const_reference const_reference;
+		typedef typename allocator_type::pointer pointer;
+		typedef typename allocator_type::const_pointer const_pointer;
+		typedef bidirectional_iterator <value_type> iterator;
+		typedef bidirectional_iterator<const value_type> const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
-		typedef const ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 		typedef std::ptrdiff_t difference_type;
 		typedef std::size_t size_type;
-
-	};
-
-	template <class T, class U> struct pair {
-	public:
-		typedef T first_type;
-		typedef U second_type;
 	private:
-		first_type first;
-		second_type second;
+		typedef typename allocator_type::template
+		rebind<value_type>::other node_alloc;
+		typedef typename node_alloc::pointer _node_pointer;
+		node_alloc _node_alloc;
+		allocator_type _alloc;
+		_node_pointer _map_init;
+		size_type _length;
+		size_type _capacity;
 	public:
-		pair() :first(NULL), second(NULL) {};
-		template<class U, class V> pair (const pair<U,V>& pr): first(pr.first), second(pr.second) {};
-		pair (const first_type& a, const second_type& b):first(a), second(b) {};
-		pair& operator= (const pair& pr) {
-			if (*this == pr)
-				return (*this);
-			*this = pr;
-			return (*this);
+		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) :
+				_alloc(alloc), _map_init(nullptr), _length(0), _capacity(0)
+		{
+			_map_init = _node_alloc.allocate(1);
+			_node_alloc.construct(_map_init, value_type());
 		};
+	};
 		template <class T1, class T2>
 		bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
 		{ return lhs.first==rhs.first && lhs.second==rhs.second; }
@@ -64,7 +69,6 @@ namespace ft {
 		template <class T1, class T2>
 		bool operator>= (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
 		{ return !(lhs<rhs); }
-	};
 }
 
 #endif //FT_CONTAINERS_MAP_HPP
