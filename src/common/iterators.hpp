@@ -20,11 +20,11 @@ namespace ft {
 		typedef T*								pointer;
 		typedef T&								reference;
 		typedef ft::bidirectional_iterator_tag	iterator_category;
-		typedef list_node<typename ft::remove_const<T>::type>	node;
+		typedef list_node<typename ft::remove_const<value_type>::type> node;
 
-//		You need to add list_node and bidirectional_iterator as a friend for
+		//		You need to add list_node and bidirectional_iterator as a friend for
 //		a logical comparison operator
-		template<class >
+		template<class , class Alloc>
 		friend class list;
 
 		template<class >
@@ -84,7 +84,7 @@ namespace ft {
 
 //		You need to add list_node and bidirectional_iterator as a friend for
 //		a logical comparison operator
-		template<class > friend class vector;
+		template < class , class Alloc> friend class vector;
 		template<class > friend class random_access_iterator;
 	private:
 		value_type* _p;

@@ -9,37 +9,53 @@
 #include <cstddef>
 
 namespace ft {
-	template < class T >
-	class list {
+	template < class T, class Alloc = std::allocator<T> > class list {
 	public:
-		typedef T							value_type;
-		typedef T& 							reference;
-		typedef const T&					const_reference;
-		typedef T*							pointer;
-		typedef const T*					const_pointer;
+		typedef T									value_type;
+		typedef Alloc							allocator_type;
+		typedef typename allocator_type::reference	reference;
+		typedef typename allocator_type::const_reference const_reference;
+		typedef typename allocator_type::pointer	pointer;
+		typedef typename allocator_type::const_pointer const_pointer;
 		typedef	bidirectional_iterator<value_type>	iterator;
-		typedef const bidirectional_iterator<value_type> const_iterator;
+		typedef bidirectional_iterator<const value_type> const_iterator;
 		typedef ft::reverse_iterator<iterator>	reverse_iterator;
-		typedef const ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		typedef std::ptrdiff_t 				difference_type;
 		typedef std::size_t 				size_type;
 		typedef list_node<typename ft::remove_const<value_type>::type> node;
 	private:
+		typedef typename allocator_type::template
+		rebind<list_node<T> >::other node_alloc;
+		typedef typename node_alloc::pointer	_node_pointer;
+		node_alloc		_node_alloc;
+		allocator_type  _alloc;
 		node*			_init_node;
 		size_type		_length;
+//		CreateNode
+		_node_pointer CreateNode (const T& data, list_node<T>*prev = nullptr, list_node<T>*next = nullptr) {
+			_node_pointer new_node = _node_alloc.allocate(1);
+			_node_alloc.construct(new_node, list_node<T>(data));
+			new_node->prev = prev;
+			new_node->next = next;
+			return (new_node);
+		}
 	public:
 //			default (1)
-		explicit list () : _init_node(nullptr), _length(0) {
-			_init_node = new list_node<T>;
+		explicit list (const allocator_type& alloc = allocator_type()): _alloc(alloc), _init_node(nullptr), _length(0) {
+			_init_node = _node_alloc.allocate(1);
+			_node_alloc.construct(_init_node, list_node<value_type>());
 			_init_node->next = _init_node;
 			_init_node->prev = _init_node;
 		};
 //			fill (2)
-		explicit list (size_type n, const value_type  &data = value_type()) :_init_node(nullptr), _length(0) {
-			_init_node = new list_node<T>;
+		explicit list (size_type n, const value_type& val = value_type(), const allocator_type& alloc =
+				allocator_type()) :_alloc(alloc), _init_node(nullptr), _length(0) {
+			_init_node = _node_alloc.allocate(1);
+			_node_alloc.construct(_init_node, list_node<value_type>());
 			_init_node->next = _init_node;
 			_init_node->prev = _init_node;
-			assign(n, data);
+			assign(n, val);
 		};
 //			range (3)
 		template <class InputIterator>
@@ -78,6 +94,8 @@ namespace ft {
 			return iterator(_init_node->next);
 		};
 		const_iterator begin() const {
+			if (_length == 0)
+				return end();
 			return const_iterator(_init_node->next);
 		};
 		iterator end() {
@@ -87,16 +105,16 @@ namespace ft {
 			return const_iterator (_init_node);
 		}
 		reverse_iterator rbegin() {
-			return reverse_iterator(_init_node->prev);
+			return reverse_iterator(end());
 		};
 		const_reverse_iterator rbegin() const{
-			return const_reverse_iterator(_init_node->prev);
+			return const_reverse_iterator(end());
 		};
 		reverse_iterator rend() {
-			return reverse_iterator(_init_node->next);
+			return reverse_iterator(begin());
 		};
 		const_reverse_iterator rend() const {
-			return const_reverse_iterator (_init_node->next);
+			return const_reverse_iterator (begin());
 		};
 //			Capacity:
 		bool empty() const	{return (!_length);};
@@ -124,7 +142,7 @@ namespace ft {
 				push_back(val);
 		};
 		void push_back (const value_type& val) {
-			node *tmp = new node(val);
+			_node_pointer tmp = CreateNode(val);
 			tmp->prev = _init_node->prev;
 			tmp->next = _init_node;
 			tmp->prev->next = tmp;
@@ -135,11 +153,12 @@ namespace ft {
 			node *tmp = _init_node->prev;
 			_init_node->prev = _init_node->prev->prev;
 			_init_node->prev->next = _init_node;
-			delete tmp;
+			_node_alloc.destroy(tmp);
+			_node_alloc.deallocate(tmp, 1);
 			_length -= 1;
 		};
 		void push_front (const value_type& val){
-			node *tmp = new node(val);
+			_node_pointer tmp = CreateNode(val);
 			tmp->prev = _init_node;
 			tmp->next = _init_node->next;
 			_init_node->next->prev = tmp;
@@ -150,7 +169,8 @@ namespace ft {
 			node *tmp = _init_node->next;
 			_init_node->next->prev = _init_node;
 			_init_node->next = _init_node->next->next;
-			delete tmp;
+			_node_alloc.destroy(tmp);
+			_node_alloc.deallocate(tmp, 1);
 			_length -= 1;
 		};
 		void clear(){
@@ -197,8 +217,20 @@ namespace ft {
 			return (last);
 		};
 		void swap (list& x){
-			ft::swap(_init_node->next, x._init_node->next);
-			ft::swap(_init_node->prev, x._init_node->prev);
+			if (*this == x)
+				return;
+			allocator_type swap_alloc = x._alloc;
+			node_alloc swap_node_alloc = x._node_alloc;
+			list_node<T>* swap_node_list = x._init_node;
+
+			x._alloc = this->_alloc;
+			x._node_alloc = this->_node_alloc;
+			x._init_node = this->_init_node;
+
+			this->_alloc = swap_alloc;
+			this->_node_alloc = swap_node_alloc;
+			this->_init_node = swap_node_list;
+
 			ft::swap(_length, x._length);
 		};
 		void resize (size_type n, value_type val = value_type()){
@@ -349,7 +381,8 @@ namespace ft {
 	template <class T> bool operator== (const list<T>& lhs, const list<T>& rhs) {
 		if (lhs.size() != rhs.size())
 			return false;
-		for (typename list<T>::iterator l_it = lhs.begin(), r_it = rhs.begin(); l_it != lhs.end(); ++l_it, ++r_it){
+		for (typename list<T>::const_iterator l_it = lhs.begin(), r_it = rhs.begin(); l_it != lhs.end(); ++l_it,
+				++r_it){
 			if (!(*l_it == *r_it))
 				return false;
 		}
@@ -359,7 +392,7 @@ namespace ft {
 		return !(lhs == rhs);
 	}
 	template <class T> bool operator<  (const list<T>& lhs, const list<T>& rhs){
-		typename list<T>::iterator l_it = lhs.begin(), r_it = rhs.begin();
+		typename list<T>::const_iterator l_it = lhs.begin(), r_it = rhs.begin();
 		for (; l_it != lhs.end() && r_it != rhs.end(); ++l_it, ++r_it){
 			if (*l_it < *r_it)
 				return true;

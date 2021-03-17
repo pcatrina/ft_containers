@@ -19,7 +19,7 @@ namespace ft
 	private:
 		container_type _cntr;
 	public:
-		explicit queue(const container_type &ctnr = container_type()) : _cntr(ctnr) {};
+		explicit queue(const container_type &ctnr = container_type()): _cntr(ctnr) {};
 
 		bool empty() const { return _cntr.empty();};
 
