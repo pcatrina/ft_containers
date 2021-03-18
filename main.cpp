@@ -1,4 +1,5 @@
 #include <iostream>
+#include <map>
 #include "./src/list/list.hpp"
 #include "./src/stack/stack.hpp"
 #include "./src/vector/vector.hpp"
@@ -10,7 +11,9 @@ int main()
 //	Today test
 
 ft::map<int, std::string> my_string;
-my_string[5] = "asd";
+
+ft::map<int, std::string>::iterator it_ft;
+
 //	Deque
 
 //	ft::deque<std::string> my_deque(5, "Hi");

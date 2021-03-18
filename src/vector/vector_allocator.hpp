@@ -161,7 +161,8 @@ namespace ft {
 				else
 					reserve(_capacity * 2);
 			}
-			_alloc_start[_size] = val;
+			_alloc.construct(_alloc_start + _size, val);
+//			_alloc_start[_size] = val;
 			++_size;
 		};
 		void pop_back() {

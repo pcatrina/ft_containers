@@ -2,7 +2,9 @@
 #define FT_CONTAINERS_ITERATORS_HPP
 
 #include <cstddef>
+#include <limits>
 #include "../list/list_node.hpp"
+#include "../map/map_node.hpp"
 #include "utils.hpp"
 
 namespace ft {
@@ -11,8 +13,7 @@ namespace ft {
 //		type: std::bidirectional_iterator_tag
 
 //List Iterator
-	template<class T>
-	class bidirectional_iterator {
+	template<class T> class bidirectional_iterator {
 	public:
 //		All possible member_types
 		typedef T								value_type;
@@ -22,7 +23,7 @@ namespace ft {
 		typedef ft::bidirectional_iterator_tag	iterator_category;
 		typedef list_node<typename ft::remove_const<value_type>::type> node;
 
-		//		You need to add list_node and bidirectional_iterator as a friend for
+//		You need to add list_node and bidirectional_iterator as a friend for
 //		a logical comparison operator
 		template<class , class Alloc>
 		friend class list;
@@ -64,8 +65,7 @@ namespace ft {
 			return temp;
 		}
 	};
-	template<typename U>
-	bool operator!=(const bidirectional_iterator<U> &lhs, const bidirectional_iterator<U> &rhs) {
+	template<typename U> bool operator!=(const bidirectional_iterator<U> &lhs, const bidirectional_iterator<U> &rhs) {
 		return !(lhs == rhs);
 	}
 
@@ -157,6 +157,97 @@ namespace ft {
 	template<class U>
 	bool operator>=(const random_access_iterator<U> &lhs, const random_access_iterator<U> &rhs) {
 		return !(lhs>rhs);
+	}
+
+//		Iterator for map - for more information read std::iterator
+//		type: std::random_access_iterator
+
+//	Map iterator
+	template<class T, class Compare = ft::less<typename T::first_type> > class map_iterator {
+	public:
+	//		All possible member_types
+	typedef T								value_type;
+	typedef std::ptrdiff_t					difference_type;
+	typedef T*								pointer;
+	typedef T&								reference;
+	typedef ft::bidirectional_iterator_tag	iterator_category;
+	typedef map_node<typename ft::remove_const<value_type>::type> node;
+//		You need to add list_node and bidirectional_iterator as a friend for
+//		a logical comparison operator
+		template<class , class , class, class Alloc>
+		friend class map;
+
+		template<class, class >
+		friend class map_iterator;
+	private:
+		node*	_data;
+		Compare	_comp;
+
+		node *next_node() {
+			node* tmp = _data;
+			if (tmp->_height == 0) {
+				if (tmp->_parent->_left == tmp)
+					return tmp;
+				return tmp->_parent;
+			} else if (tmp->_right) {
+				tmp =  tmp->_right;
+				while(tmp->_left)
+					tmp = tmp->_left;
+			} else {
+				while (!_comp(this->_data->_data.first, tmp->_data.first))
+					tmp = tmp->_parent;
+			}
+			return (tmp);
+		}
+
+		node *prev_node() {
+			node *tmp = _data;
+			if (tmp->_height == 0) {
+				if (tmp->_parent->_left == tmp)
+					return tmp;
+				return tmp->_parent;
+			} else if (tmp->_left) {
+				tmp = tmp->_left;
+				while (tmp->_right)
+					tmp = tmp->_right;
+			} else {
+				while (!_comp(tmp->_data.first, this->_data->_data.first))
+					tmp = tmp->_parent;
+			}
+			return (tmp);
+		}
+
+	public:
+		map_iterator(): _data(NULL), _comp() {};
+		map_iterator(const map_iterator &other): _data(other._data), _comp(other._comp) {};
+		template<class U> map_iterator(map_iterator<U> *other,
+		typename ft::enable_if<!ft::is_const<U>::value>::type* = NULL) {};
+		map_iterator(node *data): _data(data), _comp() {};
+		~map_iterator() {};
+
+		const map_iterator&operator=(const map_iterator &other) {_data=other._data; _comp=other._comp; return *this;};
+		reference operator*() const {return _data->_data;}
+		pointer operator->() const {return &_data->_data;}
+
+		template<class U> friend bool operator==(const map_iterator& lhs, const map_iterator& rhs) {
+			return lhs._data == rhs._data;
+		};
+
+		map_iterator& operator++() {_data = next_node(); return *this;}
+		map_iterator&operator++(int) {
+			node tmp = *this;
+			++(*this);
+			return (tmp);
+		}
+		map_iterator& operator--() {_data = prev_node(); return *this;}
+		map_iterator&operator--(int) {
+			node tmp = *this;
+			--(*this);
+			return (tmp);
+		}
+	};
+	template<class U> bool operator!=(const map_iterator<U> &lhs, const map_iterator<U> &rhs) {
+		return !(lhs==rhs);
 	}
 }
 

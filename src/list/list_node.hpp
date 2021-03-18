@@ -1,8 +1,7 @@
 #ifndef FT_CONTAINERS_LIST_NODE_HPP
 #define FT_CONTAINERS_LIST_NODE_HPP
 
-namespace ft
-{
+namespace ft {
 	template<class T> class list_node {
 	public:
 		list_node *prev;
