@@ -10,9 +10,26 @@ int main()
 {
 //	Today test
 
-ft::map<int, std::string> my_string;
+//ft::map<int, std::string> my_string;
+//
+//ft::map<int, std::string>::iterator it_ft;
 
-ft::map<int, std::string>::iterator it_ft;
+ft::pair<int, std::string> my_pair(1, "A");
+//
+ft::map_node<ft::pair<int, std::string> > my_node(my_pair);
+//
+//ft::map_node<ft::pair<int, std::string> > my_sec_node(my_node);
+
+ft::map<int, std::string> my_map;
+//
+my_map.insert(my_pair);
+
+ft::map<int, std::string>::iterator it;
+
+it = my_map.begin();
+
+std::cout<<it->second<<std::endl;
+
 
 //	Deque
 
