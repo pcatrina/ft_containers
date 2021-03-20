@@ -38,7 +38,7 @@ namespace ft {
 		typedef typename allocator_type::template
 		rebind<value_type>::other node_alloc;
 		typedef typename node_alloc::pointer _node_pointer;
-		value_compare	_val_comp;
+		value_compare 	_val_comp;
 		allocator_type	_alloc;
 		node_alloc _node_alloc;
 		key_compare		_comp;
@@ -56,32 +56,39 @@ namespace ft {
 		pointer CreatInit(){
 			node* new_node = _alloc.allocate(1);
 			_alloc.construct(new_node, node_type());
-			new_node->_parent = new_node;
-			new_node->_left = new_node;
-			new_node->_right = new_node;
+			new_node->_parent = NULL;
+			new_node->_left = NULL;
+			new_node->_right = NULL;
 			new_node->_height = 0;
 			return (new_node);
 		}
 //		BTR_functions
 //		ADD
-		node* ADD(node* _init_node, node* new_node) {
-			if (_val_comp(new_node->_data, _init_node->_data)) {
-				if (_init_node->_left)
-					new_node = ADD(_init_node->_left, new_node);
+		node* ADD(node* _cur, node* new_node) {
+			if (_val_comp(new_node->_data, _cur->_data)) {
+				if (_cur->_left)
+					new_node = ADD(_cur->_left, new_node);
 				else {
-					new_node->_parent = _init_node;
-					_init_node->_left = new_node;
+					new_node->_parent = _cur;
+					_cur->_left = new_node;
 				}
-			} else if (_val_comp(_init_node->_data, new_node->_data)) {
-				if (_init_node->_right)
-					new_node = ADD(_init_node->_right, new_node);
+			} else if (_val_comp(_cur->_data, new_node->_data)) {
+				if (_cur->_right)
+					new_node = ADD(_cur->_right, new_node);
 				else {
-					new_node->_parent = _init_node;
-					_init_node->_right = new_node;
+					new_node->_parent = _cur;
+					_cur->_right = new_node;
 				}
 			} else
-				return _init_node;
+				return _cur;
+//			balance
 			return new_node;
+		}
+
+		node * FIND_INIT(node* _cur) {
+			while (_cur->_parent)
+				_cur = _cur->_parent;
+			return (_cur);
 		}
 
 		void LinkDefaultTree() const {
@@ -102,12 +109,22 @@ namespace ft {
 			}
 		}
 
-		node* AddNewNode(node* _init_node, node* new_node) {
+		void UnlinkTree() const {
+			if (_init_node) {
+				_start_node->_parent->_left = NULL;
+				_end_node->_parent->_right = NULL;
+				_start_node->_parent = _end_node;
+				_end_node->_parent = _start_node;
+			}
+		}
+
+		node* AddNewNode(node* _cur, node* new_node) {
+			UnlinkTree();
 			if (!_init_node)
 				_init_node = new_node;
 			else {
-				new_node = ADD(_init_node, new_node);
-//				_init_node = FIND_INIT();
+				new_node = ADD(_cur, new_node);
+				_init_node = FIND_INIT(_init_node);
 			}
 			LinkDefaultTree();
 			return new_node;
@@ -142,11 +159,28 @@ namespace ft {
 		~map() {};
 
 //		Iterators
-		iterator begin() {
-			return ++iterator(_start_node);
-		};
+		iterator begin() { return ++iterator(_start_node);};
+		const_iterator begin() const { return  ++const_iterator(_start_node);};
 
+		iterator end() {return iterator (_end_node);};
+		const_iterator end() const { return const_iterator(_end_node);};
+
+		reverse_iterator rbegin() {return reverse_iterator(end());};
+		const_reverse_iterator rbegin() const {return const_reverse_iterator(end());};
+
+		reverse_iterator rend() {return reverse_iterator (begin());};
+		const_reverse_iterator rend() const { return const_reverse_iterator (begin());};
+
+//		Capacity:
+		bool empty() const {return !(_length);};
+		size_type size() const {return _length;};
+		size_type max_size() const {return std::numeric_limits<size_type>::max() / (sizeof(node));};
+
+//		Element access:
 		mapped_type& operator[] (const key_type& k) {
+			value_type val(k, mapped_type());
+			iterator it = insert(val).first;
+			return (*it).second;
 		};
 
 //		Modifiers

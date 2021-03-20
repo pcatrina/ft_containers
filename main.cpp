@@ -15,6 +15,10 @@ int main()
 //ft::map<int, std::string>::iterator it_ft;
 
 ft::pair<int, std::string> my_pair(1, "A");
+ft::pair<int, std::string> my_pair_1(2, "B");
+ft::pair<int, std::string> my_pair_2(3, "C");
+
+
 //
 ft::map_node<ft::pair<int, std::string> > my_node(my_pair);
 //
@@ -23,6 +27,7 @@ ft::map_node<ft::pair<int, std::string> > my_node(my_pair);
 ft::map<int, std::string> my_map;
 //
 my_map.insert(my_pair);
+my_map.insert(my_pair_1);
 
 ft::map<int, std::string>::iterator it;
 
@@ -30,6 +35,43 @@ it = my_map.begin();
 
 std::cout<<it->second<<std::endl;
 
+++it;
+
+std::cout<<it->second<<std::endl;
+
+my_map[4] = ("D");
+
+it = --(my_map.end());
+
+std::cout<<it->second<<std::endl;
+
+ft::map<int, std::string>::iterator it_my;
+
+it = my_map.begin();
+
+std::string Title = " *** MY _ MAP *** ";
+
+std::cout<<Title<<"\n";
+
+
+for (size_t  i = 0; i != my_map.size() ; ++it, ++i) {
+	std::cout<<" "<<it->first<<" - "<<it->second<<std::endl;
+}
+
+std::cout<<" *** STD *** "<<"\n";
+
+std::pair<int, std::string> std_pair(1, "A");
+std::pair<int, std::string> std_pair_1(2, "B");
+
+std::map<int, std::string> std_map;
+std_map.insert(std_pair);
+std::map<int, std::string>::iterator std_it;
+std_it = std_map.begin();
+std::cout<<std_it->second<<std::endl;
+
+std::cout<<" *** MAX_SIZE *** "<<"\n";
+std::cout<<my_map.max_size()<<std::endl;
+std::cout<<std_map.max_size()<<std::endl;
 
 //	Deque
 

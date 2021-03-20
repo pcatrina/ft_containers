@@ -186,7 +186,7 @@ namespace ft {
 		node *next_node() {
 			node* tmp = _data;
 			if (tmp->_height == 0) {
-				if (tmp->_parent->_left == tmp)
+				if (tmp->_parent->_right == tmp)
 					return tmp;
 				return tmp->_parent;
 			} else if (tmp->_right) {
