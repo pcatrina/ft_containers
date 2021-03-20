@@ -52,6 +52,12 @@ namespace ft {
 			_alloc.construct(new_node, data);
 			return (new_node);
 		}
+
+		void DeleteNode(node* x) {
+			_alloc.destroy(x);
+			_alloc.deallocate(x, 1);
+		}
+
 //		CreateInit
 		pointer CreatInit(){
 			node* new_node = _alloc.allocate(1);
@@ -81,8 +87,110 @@ namespace ft {
 				}
 			} else
 				return _cur;
-//			balance
+			BALANCE(_cur);
 			return new_node;
+		}
+		ft::pair<node*, bool> DELETING(node *n, const key_type& k) {
+			ft::pair<node*, bool> ret (NULL, false);
+			if (!n)
+				return false;
+			if (k < n->_data.first) {
+				ret = DELETING(n->_left, k);
+				n->_left = ret.first;
+			} else if (n->_data.first < k) {
+				ret = DELETING(n->_right, k);
+				n->_right = ret.first;
+			} else if ((n->_left == NULL) || (n->_right == NULL)) {
+				node* tmp = NULL;
+				if (tmp->_left)
+					tmp = tmp->_left;
+				else if (tmp->_right)
+					tmp = tmp->_right;
+				if (tmp) {
+					tmp->_parent = n->_parent;
+					if (tmp->_parent) {
+						if (tmp->_parent->_left == n)
+							tmp->_parent->_left = tmp;
+						else
+							tmp->_parent->_right = tmp;
+					}
+				}
+				DeleteNode(n);
+				n = tmp;
+				ret.second = true;
+			}
+		}
+		node* BALANCE(node* _cur) {
+			OVER_HEAD(_cur);
+			if (BF(_cur) == 2) {
+				if (BF(_cur->_right)<0)
+					_cur->_right = RIGHT_SR(_cur->_right);
+				return LEFT_SR(_cur);
+			}
+			if (BF(_cur) == -2) {
+				if (BF(_cur->_left)>0)
+					_cur->_left = LEFT_SR(_cur->_left);
+				return RIGHT_SR(_cur);
+			}
+			return _cur;
+		}
+
+		int BF (node *_cur) {
+			int h_left = 0;
+			int h_right = 0;
+			h_left = (_cur->_left ? _cur->_left->_height : 0);
+			h_right = (_cur->_right ? _cur->_right->_height : 0);
+			return ((h_right) - (h_left));
+		};
+
+		void OVER_HEAD(node *_cur) {
+			int h_left = 0;
+			int h_right = 0;
+			if (_cur->_left)
+				h_left = _cur->_left->_height;
+			if (_cur->_right)
+				h_right = _cur->_right->_height;
+			_cur->_height = ((h_left>h_right) ? h_left : h_right) + 1;
+		}
+
+		node* RIGHT_SR(node *r) {
+			node* l = r->_left;
+			node* r2 = l->_right;
+			l->_right = r;
+			l->_parent = r->_parent;
+			if (l->_parent) {
+				if (l->_parent->_left == r)
+					l->_parent->_left = l;
+				else
+					l->_parent->_right = l;
+			}
+			r->_left = r2;
+			if (r2)
+				r2->_parent = r;
+			r->_parent = l;
+			OVER_HEAD(r);
+			OVER_HEAD(l);
+			return l;
+		}
+
+		node* LEFT_SR(node *l) {
+			node* r = l->_right;
+			node* l2 = r->_left;
+			r->_left = l;
+			r->_parent = l->_parent;
+			if (r->_parent) {
+				if (r->_parent->_left == l)
+					r->_parent->_left = r;
+				else
+					r->_parent->_right = r;
+			}
+			l->_right = l2;
+			if (l2)
+				l2->_parent = l;
+			l->_parent = r;
+			OVER_HEAD(l);
+			OVER_HEAD(r);
+			return r;
 		}
 
 		node * FIND_INIT(node* _cur) {
@@ -189,13 +297,42 @@ namespace ft {
 			node* tmp = AddNewNode(_init_node, new_node);
 			if (tmp != new_node)
 			{
-				delete new_node;
+				_alloc.destroy(new_node);
+				_alloc.deallocate(new_node, 1);
 				return ft::pair<iterator,bool>(tmp, false);
 			}
 			++_length;
 			return ft::pair<iterator,bool>(iterator(new_node), true);
 		}
+		iterator insert (iterator position, const value_type& val) {
+			if (position._data != _start_node && position._data != _end_node &&
+					((_val_comp(val, position.next_node()->_data) && _val_comp(position.prev_node()->_data, val)))) {
+				insert(val);
+			} else {
+				insert(val).first;
+			}
+		};
+		template <class InputIterator>
+		void insert (InputIterator first, InputIterator last,
+			   typename enable_if<is_input_iterator<InputIterator>::value>::type* = NULL) {
+			while (first != last) {
+				insert(*first);
+				++first;
+			}
+		};
+		void erase (iterator position) {
 
+		};
+		size_type erase (const key_type& k) {
+			if (DELETING(_init_node, k)) {
+				--_length;
+				return (k);
+			} else
+				return 1;
+		};
+		void erase (iterator first, iterator last) {
+
+		};
 	};
 		template <class T1, class T2>
 		bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)

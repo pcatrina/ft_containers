@@ -28,6 +28,10 @@ ft::map<int, std::string> my_map;
 //
 my_map.insert(my_pair);
 my_map.insert(my_pair_1);
+my_map.insert(my_pair_2);
+for (size_t i = 4; i <= 26 ; ++i) {
+	my_map[i] = (static_cast<char>(64 + i));
+}
 
 ft::map<int, std::string>::iterator it;
 
@@ -38,8 +42,6 @@ std::cout<<it->second<<std::endl;
 ++it;
 
 std::cout<<it->second<<std::endl;
-
-my_map[4] = ("D");
 
 it = --(my_map.end());
 
