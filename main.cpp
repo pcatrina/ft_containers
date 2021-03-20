@@ -60,6 +60,16 @@ for (size_t  i = 0; i != my_map.size() ; ++it, ++i) {
 	std::cout<<" "<<it->first<<" - "<<it->second<<std::endl;
 }
 
+my_map.erase(16);
+
+std::cout<<Title<<"\n";
+
+it = my_map.begin();
+
+for (size_t  i = 0; i != my_map.size() ; ++it, ++i) {
+	std::cout<<" "<<it->first<<" - "<<it->second<<std::endl;
+}
+
 std::cout<<" *** STD *** "<<"\n";
 
 std::pair<int, std::string> std_pair(1, "A");

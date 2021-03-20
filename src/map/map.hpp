@@ -90,36 +90,40 @@ namespace ft {
 			BALANCE(_cur);
 			return new_node;
 		}
-		ft::pair<node*, bool> DELETING(node *n, const key_type& k) {
-			ft::pair<node*, bool> ret (NULL, false);
-			if (!n)
-				return false;
-			if (k < n->_data.first) {
-				ret = DELETING(n->_left, k);
-				n->_left = ret.first;
-			} else if (n->_data.first < k) {
-				ret = DELETING(n->_right, k);
-				n->_right = ret.first;
-			} else if ((n->_left == NULL) || (n->_right == NULL)) {
-				node* tmp = NULL;
-				if (tmp->_left)
-					tmp = tmp->_left;
-				else if (tmp->_right)
-					tmp = tmp->_right;
-				if (tmp) {
-					tmp->_parent = n->_parent;
-					if (tmp->_parent) {
-						if (tmp->_parent->_left == n)
-							tmp->_parent->_left = tmp;
-						else
-							tmp->_parent->_right = tmp;
-					}
-				}
-				DeleteNode(n);
-				n = tmp;
-				ret.second = true;
-			}
-		}
+//		ft::pair<node*, bool> DELETING(node *n, const key_type& k) {
+//			ft::pair<node*, bool> ret (NULL, false);
+//			if (!n)
+//				return ret;
+//			if (k < n->_data.first) {
+//				ret = DELETING(n->_left, k);
+//				n->_left = ret.first;
+//			} else if (n->_data.first < k) {
+//				ret = DELETING(n->_right, k);
+//				n->_right = ret.first;
+//			} else if ((n->_left == NULL) || (n->_right == NULL)) {
+//				node* tmp = NULL;
+//				if (n->_left)
+//					tmp = tmp->_left;
+//				else if (n->_right)
+//					tmp = tmp->_right;
+//				if (tmp) {
+//					tmp->_parent = n->_parent;
+//					if (tmp->_parent) {
+//						if (tmp->_parent->_left == n)
+//							tmp->_parent->_left = tmp;
+//						else
+//							tmp->_parent->_right = tmp;
+//					}
+//				}
+//				DeleteNode(n);
+//				n = tmp;
+//				ret.second = true;
+//			} else {
+//				node *next = n->_right;
+//				while (next->_left)
+//					next = next->_left;
+//			}
+//		}
 		node* BALANCE(node* _cur) {
 			OVER_HEAD(_cur);
 			if (BF(_cur) == 2) {
@@ -237,6 +241,51 @@ namespace ft {
 			LinkDefaultTree();
 			return new_node;
 		}
+		bool DeletingNode(key_type k) {
+			UnlinkTree();
+//			ft::pair<node *, bool> res;
+//			res = DELETING(_init_node, k);
+			node* finish = ___DELETE___(_init_node, k);
+			_init_node = finish;
+			LinkDefaultTree();
+//			return res.second;
+			return true;
+		}
+
+		node * ___DELETE___(node* x, const key_type &k) {
+			if (!x)
+				return NULL;
+			if (k < x->_data.first) {
+				x->_left = ___DELETE___(x->_left, k);
+			} else if (x->_data.first < k) {
+				x->_right = ___DELETE___(x->_right, k);
+			} else {
+				node* parent = x->_parent;
+				node* l = x->_left;
+				node* r = x->_right;
+				DeleteNode(x);
+				if (!r) return l;
+				node* min = SearchMin(r);
+				l->_parent = min;
+				min->_left = r;
+				min->_right = l;
+				min->_parent = parent;
+				return BALANCE(min);
+			}
+			return BALANCE(x);
+		};
+
+		node *SearchMin(node *x)
+		{
+			if (x->_left) return SearchMin(x->_left);
+			else return x;
+		}
+		node *DeleteMin(node *x)
+		{
+			if (x->_left==0) return x->_right;
+			x->_left=DeleteMin(x->_left);
+			return BALANCE(x);
+		}
 
 	public:
 		explicit map(const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type()) :
@@ -324,11 +373,11 @@ namespace ft {
 
 		};
 		size_type erase (const key_type& k) {
-			if (DELETING(_init_node, k)) {
+			if (DeletingNode(k)) {
 				--_length;
-				return (k);
+				return (1);
 			} else
-				return 1;
+				return 0;
 		};
 		void erase (iterator first, iterator last) {
 
