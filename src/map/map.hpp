@@ -90,8 +90,8 @@ namespace ft {
 			BALANCE(_cur);
 			return new_node;
 		}
-//		ft::pair<node*, bool> DELETING(node *n, const key_type& k) {
-//			ft::pair<node*, bool> ret (NULL, false);
+		ft::pair<node*, bool> DELETING(node *n, const key_type& k) {
+			ft::pair<node*, bool> ret (NULL, false);
 //			if (!n)
 //				return ret;
 //			if (k < n->_data.first) {
@@ -123,7 +123,7 @@ namespace ft {
 //				while (next->_left)
 //					next = next->_left;
 //			}
-//		}
+		}
 		node* BALANCE(node* _cur) {
 			OVER_HEAD(_cur);
 			int  BF_count = BF(_cur);
@@ -265,23 +265,22 @@ namespace ft {
 		}
 		bool DeletingNode(key_type k) {
 			UnlinkTree();
-//			ft::pair<node *, bool> res;
+			ft::pair<node *, bool> res;
 //			res = DELETING(_init_node, k);
-			node* finish = ___DELETE___(_init_node, k);
+			node* finish = ___DELETE___(_init_node, k, &res);
 			_init_node = finish;
 			LinkDefaultTree();
-//			return res.second;
-			return true;
+			return res.second;
 		}
 
-		node * ___DELETE___(node* x, const key_type &k) {
+		node * ___DELETE___(node* x, const key_type &k, ft::pair<node*, bool> *ret) {
 			if (!x)
 				return NULL;
 			if (k < x->_data.first) {
-				x->_left = ___DELETE___(x->_left, k);
+				x->_left = ___DELETE___(x->_left, k, ret);
 			} else if (x->_data.first < k) {
-				x->_right = ___DELETE___(x->_right, k);
-			} else {
+				x->_right = ___DELETE___(x->_right, k, ret);
+			} else if  (k == x->_data.first) {
 				int x_key = x->_data.first;
 				node* parent = x->_parent;
 				node* l = x->_left;
@@ -304,6 +303,8 @@ namespace ft {
 					BALANCE(min);
 					return BALANCE(_init_node);
 				}
+				ret->first = r;
+				ret->second = true;
 				return RecursiveBalance(r);
 			}
 			return BALANCE(x);

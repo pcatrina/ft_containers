@@ -60,7 +60,13 @@ for (size_t  i = 0; i != my_map.size() ; ++it, ++i) {
 	std::cout<<" "<<it->first<<" - "<<it->second<<std::endl;
 }
 
-my_map.erase(26);
+if (my_map.erase(14)) {
+	std::cout<<"Complied"<<my_map.size()<<std::endl;
+} else {
+	std::cout<<"Error"<<my_map.size()<<std::endl;
+}
+
+
 
 std::cout<<Title<<"\n";
 
