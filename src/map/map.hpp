@@ -126,12 +126,13 @@ namespace ft {
 //		}
 		node* BALANCE(node* _cur) {
 			OVER_HEAD(_cur);
-			if (BF(_cur) == 2) {
+			int  BF_count = BF(_cur);
+			if (BF_count == 2) {
 				if (BF(_cur->_right)<0)
 					_cur->_right = RIGHT_SR(_cur->_right);
 				return LEFT_SR(_cur);
 			}
-			if (BF(_cur) == -2) {
+			if (BF_count == -2) {
 				if (BF(_cur->_left)>0)
 					_cur->_left = LEFT_SR(_cur->_left);
 				return RIGHT_SR(_cur);
@@ -160,18 +161,27 @@ namespace ft {
 		node* RIGHT_SR(node *r) {
 			node* l = r->_left;
 			node* r2 = l->_right;
-			l->_right = r;
-			l->_parent = r->_parent;
-			if (l->_parent) {
-				if (l->_parent->_left == r)
-					l->_parent->_left = l;
+			if (r->_parent) {
+				if (r->_parent->_left == r)
+					r->_parent->_left = l;
 				else
-					l->_parent->_right = l;
+					r->_parent->_right = l;
 			}
+			l->_parent = r->_parent;
+//			r->_parent->_left = l;
+			l->_right = r;
+			r->_parent = l;
 			r->_left = r2;
 			if (r2)
 				r2->_parent = r;
-			r->_parent = l;
+////			if (l->_parent) {
+////				if (l->_parent->_left == r)
+////					l->_parent->_left = l;
+////				else
+////					l->_parent->_right = l;
+////			}
+//			r->_left = r2;
+
 			OVER_HEAD(r);
 			OVER_HEAD(l);
 			return l;
@@ -180,18 +190,30 @@ namespace ft {
 		node* LEFT_SR(node *l) {
 			node* r = l->_right;
 			node* l2 = r->_left;
-			r->_left = l;
-			r->_parent = l->_parent;
-			if (r->_parent) {
-				if (r->_parent->_left == l)
-					r->_parent->_left = r;
+			if (l->_parent) {
+				if (l->_parent->_left == l)
+					l->_parent->_left = r;
 				else
-					r->_parent->_right = r;
+					l->_parent->_right = r;
 			}
+//			r->_parent = l->_parent;
+//			r->_left = l;
+//			if (r->_parent) {
+//				if (r->_parent->_left == l)
+//					r->_parent->_left = r;
+//				else
+//					r->_parent->_right = r;
+//			}
+//			l->_right = l2;
+//			if (l2)
+//				l2->_parent = l;
+//			l->_parent = r;
+			r->_parent = l->_parent;
+			r->_left = l;
+			l->_parent = r;
 			l->_right = l2;
 			if (l2)
 				l2->_parent = l;
-			l->_parent = r;
 			OVER_HEAD(l);
 			OVER_HEAD(r);
 			return r;
@@ -260,17 +282,29 @@ namespace ft {
 			} else if (x->_data.first < k) {
 				x->_right = ___DELETE___(x->_right, k);
 			} else {
+				int x_key = x->_data.first;
 				node* parent = x->_parent;
 				node* l = x->_left;
 				node* r = x->_right;
 				DeleteNode(x);
 				if (!r) return l;
 				node* min = SearchMin(r);
-				l->_parent = min;
-				min->_left = r;
-				min->_right = l;
-				min->_parent = parent;
-				return BALANCE(min);
+				min->_left = l;
+				if (l)
+					l->_parent = min;
+				if (parent) {
+					r->_parent = parent;
+					if (x_key < parent->_data.first)
+						parent->_left = x->_right;
+					else
+						parent->_right = x->_right;
+				} else {
+					_init_node = r;
+					r->_parent = NULL;
+					BALANCE(min);
+					return BALANCE(_init_node);
+				}
+				return RecursiveBalance(r);
 			}
 			return BALANCE(x);
 		};
@@ -284,6 +318,13 @@ namespace ft {
 		{
 			if (x->_left==0) return x->_right;
 			x->_left=DeleteMin(x->_left);
+			return BALANCE(x);
+		}
+
+		node* RecursiveBalance(node* x) {
+			if (x->_left) {
+				RecursiveBalance(x->_left);
+			}
 			return BALANCE(x);
 		}
 
