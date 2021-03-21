@@ -281,6 +281,7 @@ namespace ft {
 			} else if (x->_data.first < k) {
 				x->_right = ___DELETE___(x->_right, k, ret);
 			} else if  (k == x->_data.first) {
+				ret->second = true;
 				int x_key = x->_data.first;
 				node* parent = x->_parent;
 				node* l = x->_left;
@@ -303,8 +304,6 @@ namespace ft {
 					BALANCE(min);
 					return BALANCE(_init_node);
 				}
-				ret->first = r;
-				ret->second = true;
 				return RecursiveBalance(r);
 			}
 			return BALANCE(x);

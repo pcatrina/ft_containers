@@ -60,7 +60,7 @@ for (size_t  i = 0; i != my_map.size() ; ++it, ++i) {
 	std::cout<<" "<<it->first<<" - "<<it->second<<std::endl;
 }
 
-if (my_map.erase(14)) {
+if (my_map.erase(147)) {
 	std::cout<<"Complied"<<my_map.size()<<std::endl;
 } else {
 	std::cout<<"Error"<<my_map.size()<<std::endl;
@@ -75,6 +75,13 @@ it = my_map.begin();
 for (size_t  i = 0; i != my_map.size() ; ++it, ++i) {
 	std::cout<<" "<<it->first<<" - "<<it->second<<std::endl;
 }
+
+for (int i = 0; i <= 26; ++i) {
+	my_map.erase(i);
+}
+
+std::cout<<my_map.size()<<std::endl;
+
 
 std::cout<<" *** STD *** "<<"\n";
 
