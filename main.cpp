@@ -8,18 +8,19 @@
 #include "./src/map/map.hpp"
 int main()
 {
+
 //	Today test
 
-//ft::map<int, std::string> my_string;
-//
-//ft::map<int, std::string>::iterator it_ft;
+ft::map<int, std::string> my_string;
+
+ft::map<int, std::string>::iterator it_ft;
 
 ft::pair<int, std::string> my_pair(1, "A");
 ft::pair<int, std::string> my_pair_1(2, "B");
 ft::pair<int, std::string> my_pair_2(3, "C");
 
 
-//
+
 ft::map_node<ft::pair<int, std::string> > my_node(my_pair);
 //
 //ft::map_node<ft::pair<int, std::string> > my_sec_node(my_node);
@@ -76,23 +77,82 @@ for (size_t  i = 0; i != my_map.size() ; ++it, ++i) {
 	std::cout<<" "<<it->first<<" - "<<it->second<<std::endl;
 }
 
-for (int i = 0; i <= 26; ++i) {
-	my_map.erase(i);
-}
+ft::map<int, std::string> my_map_2;
+
+my_map.swap(my_map_2);
 
 std::cout<<my_map.size()<<std::endl;
 
+it  = my_map_2.begin();
+
+std::cout<<" *** My_map_2 *** "<<std::endl;
+
+for (size_t  i = 0; i != my_map_2.size() ; ++it, ++i) {
+	std::cout<<" "<<it->first<<" - "<<it->second<<std::endl;
+}
+
+it = my_map_2.find(10);
+
+my_map_2.erase(11);
+my_map_2.erase(12);
+my_map_2.erase(13);
+
+my_map_2.erase(15);
+my_map_2.erase(16);
+my_map_2.erase(17);
+
+
+
+it = my_map_2.lower_bound(10);
+
+std::cout<<it->first<<std::endl;
+
+it = my_map_2.upper_bound(26);
+
+std::cout<<it->first<<std::endl;
+
+auto mp = my_map_2.equal_range(11);
+std::cout<<mp.first->first<<std::endl;
+std::cout<<mp.second->first<<std::endl;
+
+//my_map_2.clear();
+
+//std::cout<<my_map_2.count(10)<<'\n';
+
+//std::cout<<my_map_2.size()<<'\n';
 
 std::cout<<" *** STD *** "<<"\n";
 
-std::pair<int, std::string> std_pair(1, "A");
-std::pair<int, std::string> std_pair_1(2, "B");
-
 std::map<int, std::string> std_map;
-std_map.insert(std_pair);
 std::map<int, std::string>::iterator std_it;
-std_it = std_map.begin();
-std::cout<<std_it->second<<std::endl;
+
+
+for(size_t i = 0; i <= 26; ++i) {
+	std_map[i] = (static_cast<char>(64 + i));
+}
+
+std_map.erase(11);
+std_map.erase(12);
+std_map.erase(13);
+
+std_map.erase(15);
+std_map.erase(16);
+std_map.erase(17);
+
+
+
+std_it = std_map.lower_bound(10);
+
+std::cout<<std_it->first<<std::endl;
+
+std_it = std_map.upper_bound(26);
+
+std::cout<<std_it->first<<std::endl;
+
+auto pp = std_map.equal_range(11);
+std::cout<<pp.first->first<<std::endl;
+std::cout<<pp.second->first<<std::endl;
+
 
 std::cout<<" *** MAX_SIZE *** "<<"\n";
 std::cout<<my_map.max_size()<<std::endl;

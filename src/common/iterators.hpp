@@ -229,25 +229,27 @@ namespace ft {
 		reference operator*() const {return _data->_data;}
 		pointer operator->() const {return &_data->_data;}
 
-		template<class U> friend bool operator==(const map_iterator& lhs, const map_iterator& rhs) {
+		template <class U>
+		friend bool operator== (const map_iterator<U, Compare>& lhs, const map_iterator<U, Compare>& rhs) {
 			return lhs._data == rhs._data;
 		};
 
 		map_iterator& operator++() {_data = next_node(); return *this;}
 		map_iterator&operator++(int) {
-			node tmp = *this;
+			map_iterator tmp = *this;
 			++(*this);
 			return (tmp);
 		}
 		map_iterator& operator--() {_data = prev_node(); return *this;}
 		map_iterator&operator--(int) {
-			node tmp = *this;
+			map_iterator tmp = *this;
 			--(*this);
 			return (tmp);
 		}
 	};
-	template<class U> bool operator!=(const map_iterator<U> &lhs, const map_iterator<U> &rhs) {
-		return !(lhs==rhs);
+	template <class U, class Compare>
+	bool operator!= (const map_iterator<U, Compare>& lhs, const map_iterator<U, Compare>& rhs) {
+		return !(lhs == rhs);
 	}
 }
 

@@ -52,13 +52,12 @@ namespace ft {
 			_alloc.construct(new_node, data);
 			return (new_node);
 		}
-
+//DeleteNode
 		void DeleteNode(node* x) {
 			_alloc.destroy(x);
 			_alloc.deallocate(x, 1);
 		}
-
-//		CreateInit
+//		CreateInitNode
 		pointer CreatInit(){
 			node* new_node = _alloc.allocate(1);
 			_alloc.construct(new_node, node_type());
@@ -225,6 +224,31 @@ namespace ft {
 			return (_cur);
 		}
 
+		node* FIND(node* _cur, const key_type k) const {
+			if (!_cur)
+				return NULL;
+			else if (_cur->_data.first > k)
+				return FIND(_cur->_left, k);
+			else if (_cur->_data.first < k)
+				return FIND(_cur->_right, k);
+			else
+				return _cur;
+		}
+
+		node* FIND_NEAR(node* _cur, const key_type& k) const {
+			if (!_cur)
+				return NULL;
+			else if (_comp(_cur->_data.first, k)) {
+				node* tmp = FIND_NEAR(_cur->_right, k);
+				if (tmp) return tmp;
+			}
+			else if (_comp(k, _cur->_data.first)) {
+				node* tmp = FIND_NEAR(_cur->_left, k);
+				if (tmp) return tmp;
+			}
+				return _cur;
+		}
+
 		void LinkDefaultTree() const {
 			if (!_init_node) {
 				_start_node->_parent = _end_node;
@@ -272,7 +296,6 @@ namespace ft {
 			LinkDefaultTree();
 			return res.second;
 		}
-
 		node * ___DELETE___(node* x, const key_type &k, ft::pair<node*, bool> *ret) {
 			if (!x)
 				return NULL;
@@ -287,7 +310,16 @@ namespace ft {
 				node* l = x->_left;
 				node* r = x->_right;
 				DeleteNode(x);
-				if (!r) return l;
+				if (!r) {
+					if (parent && l) {
+						l->_parent = parent;
+						if (x_key < parent->_data.first)
+							parent->_left = l;
+						else
+							parent->_right = l;
+					}
+					return l;
+				}
 				node* min = SearchMin(r);
 				min->_left = l;
 				if (l)
@@ -314,15 +346,9 @@ namespace ft {
 			if (x->_left) return SearchMin(x->_left);
 			else return x;
 		}
-		node *DeleteMin(node *x)
-		{
-			if (x->_left==0) return x->_right;
-			x->_left=DeleteMin(x->_left);
-			return BALANCE(x);
-		}
 
 		node* RecursiveBalance(node* x) {
-			if (x->_left) {
+ 			if (x->_left) {
 				RecursiveBalance(x->_left);
 			}
 			return BALANCE(x);
@@ -340,21 +366,25 @@ namespace ft {
 		template <class InputIterator>
 		map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type&
 		alloc = allocator_type(), typename enable_if<is_input_iterator<InputIterator>::value>::type* = NULL):
-			_alloc(alloc), _comp(_comp), _init_node(NULL) {
+			_alloc(alloc), _init_node(NULL) {
 			_start_node = CreatInit();
 			_end_node = CreatInit();
 			_length = 0;
-
 			LinkDefaultTree();
+			insert(first, last);
 		};
 		map (const map& x): _alloc(x._alloc), _comp(x._comp), _init_node(NULL) {
 			_start_node = CreatInit();
 			_end_node = CreatInit();
 			_length = 0;
-
 			LinkDefaultTree();
+			*this = x;
 		};
-		~map() {};
+		~map() {
+			clear();
+			DeleteNode(_start_node);
+			DeleteNode(_end_node);
+		};
 
 //		Iterators
 		iterator begin() { return ++iterator(_start_node);};
@@ -411,8 +441,9 @@ namespace ft {
 			}
 		};
 		void erase (iterator position) {
-
+			erase(position._data->_data.first);
 		};
+
 		size_type erase (const key_type& k) {
 			if (DeletingNode(k)) {
 				--_length;
@@ -420,9 +451,90 @@ namespace ft {
 			} else
 				return 0;
 		};
-		void erase (iterator first, iterator last) {
 
+		void erase (iterator first, iterator last) {
+			iterator tmp;
+			while (first != last) {
+				tmp = first;
+				++first;
+				erase(tmp._data->_data.first);
+			}
 		};
+
+		void swap (map& x) {
+			ft::swap(_alloc, x._alloc);
+			ft::swap(_init_node, x._init_node);
+			ft::swap(_start_node, x._start_node);
+			ft::swap(_end_node, x._end_node);
+			ft::swap(_length, x._length);
+		};
+
+		void clear() {
+			erase(begin(), end());
+		};
+//		Observers
+		key_compare key_comp() const {return _comp;};
+		value_compare value_comp() const {return _val_comp;};
+//		Operations:
+		iterator find (const key_type& k) {
+			UnlinkTree();
+			node* tmp = FIND(_init_node, k);
+			LinkDefaultTree();
+			if (tmp == NULL)
+				return iterator(end());
+			return iterator(tmp);
+		};
+
+		const_iterator find (const key_type& k) const {
+			UnlinkTree();
+			node* tmp = FIND(_init_node, k);
+			LinkDefaultTree();
+			if (tmp == NULL)
+				return const_iterator(end());
+			return const_iterator(tmp);
+		};
+
+		size_type count (const key_type& k) const {
+			return ((find(k) == end()) ? 0 : 1);
+		};
+
+		iterator lower_bound (const key_type& k) {
+			UnlinkTree();
+			node* tmp = FIND_NEAR(_init_node, k);
+			LinkDefaultTree();
+			if (k > tmp->_data.first)
+				return ++iterator(tmp);
+			return iterator(tmp);
+		};
+
+		const_iterator lower_bound (const key_type& k) const {
+			UnlinkTree();
+			node* tmp = FIND_NEAR(_init_node, k);
+			LinkDefaultTree();
+			if (k > tmp->_data.first)
+				return ++const_iterator(tmp);
+			return const_iterator(tmp);
+		};
+		iterator upper_bound (const key_type& k) {
+			iterator tmp = lower_bound(k);
+			if ((*tmp).first <= k)
+				++tmp;
+			return tmp;
+		};
+		const_iterator upper_bound (const key_type& k) const {
+			const_iterator tmp = lower_bound(k);
+			if ((*tmp).first <= k)
+				++tmp;
+			return tmp;
+		};
+		ft::pair<const_iterator,const_iterator> equal_range (const key_type& k) const {
+			return ft::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k));
+		};
+
+		pair<iterator,iterator> equal_range (const key_type& k) {
+			return ft::pair<iterator, iterator>(lower_bound(k), upper_bound(k));
+		};
+
 	};
 		template <class T1, class T2>
 		bool operator== (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
