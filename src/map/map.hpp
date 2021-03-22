@@ -378,8 +378,17 @@ namespace ft {
 			_end_node = CreatInit();
 			_length = 0;
 			LinkDefaultTree();
-			*this = x;
+			insert(x.begin(), x.end());
 		};
+		map& operator= (const map& x) {
+			if (this == &x)
+				return *this;
+			_alloc = x._alloc;
+			_comp = x._comp;
+			insert(x.begin(), x.end());
+			return *this;
+		}
+
 		~map() {
 			clear();
 			DeleteNode(_start_node);

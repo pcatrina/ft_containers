@@ -6,6 +6,7 @@
 #include "./src/queue/queue.hpp"
 #include "./src/deque/deque.hpp"
 #include "./src/map/map.hpp"
+#include <string>
 int main()
 {
 
