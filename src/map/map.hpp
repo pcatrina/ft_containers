@@ -383,8 +383,7 @@ namespace ft {
 		map& operator= (const map& x) {
 			if (this == &x)
 				return *this;
-			_alloc = x._alloc;
-			_comp = x._comp;
+			clear();
 			insert(x.begin(), x.end());
 			return *this;
 		}
@@ -415,9 +414,14 @@ namespace ft {
 
 //		Element access:
 		mapped_type& operator[] (const key_type& k) {
-			value_type val(k, mapped_type());
-			iterator it = insert(val).first;
-			return (*it).second;
+			node* tmp = FIND(_init_node, k);
+			if (tmp == NULL || tmp->_data.first != k) {
+				value_type val(k, mapped_type());
+				iterator it = insert(val).first;
+				return (*it).second;
+			}
+			iterator res(tmp);
+			return (*res).second;
 		};
 
 //		Modifiers
@@ -568,7 +572,7 @@ namespace ft {
 
 		template <class T1, class T2>
 		bool operator<  (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
-		{ return lhs.first<rhs.first || (!(rhs.first<lhs.first) && lhs.second<rhs.second); }
+		{ return lhs.first<rhs.first ;}
 
 		template <class T1, class T2>
 		bool operator<= (const pair<T1,T2>& lhs, const pair<T1,T2>& rhs)
