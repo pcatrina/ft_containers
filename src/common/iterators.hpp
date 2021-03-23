@@ -3,6 +3,9 @@
 
 #include <cstddef>
 #include <limits>
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
 #include "../list/list_node.hpp"
 #include "../map/map_node.hpp"
 #include "utils.hpp"

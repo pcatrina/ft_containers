@@ -7,6 +7,9 @@
 #include "../common/reverse_iterator.hpp"
 #include <limits>
 #include <cstddef>
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
 
 namespace ft {
 	template < class T, class Alloc = std::allocator<T> > class list {
@@ -231,17 +234,6 @@ namespace ft {
 		void swap (list& x){
 			if (*this == x)
 				return;
-//			allocator_type swap_alloc = x._alloc;
-//			node_alloc swap_node_alloc = x._node_alloc;
-//			list_node<T>* swap_node_list = x._init_node;
-//
-//			x._alloc = this->_alloc;
-//			x._node_alloc = this->_node_alloc;
-//			x._init_node = this->_init_node;
-//
-//			this->_alloc = swap_alloc;
-//			this->_node_alloc = swap_node_alloc;
-//			this->_init_node = swap_node_list;
 			ft::swap(_alloc, x._alloc);
 			ft::swap(_init_node, x._init_node);
 

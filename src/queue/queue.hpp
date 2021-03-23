@@ -7,6 +7,9 @@
 #include "../common/reverse_iterator.hpp"
 #include <limits>
 #include <cstddef>
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
 
 namespace ft
 {

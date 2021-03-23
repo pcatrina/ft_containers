@@ -7,6 +7,9 @@
 #include "map_node.hpp"
 #include <limits>
 #include <cstddef>
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
 
 
 namespace ft {
@@ -89,40 +92,7 @@ namespace ft {
 			BALANCE(_cur);
 			return new_node;
 		}
-//		ft::pair<node*, bool> DELETING(node *n, const key_type& k) {
-//			ft::pair<node*, bool> ret (NULL, false);
-//			if (!n)
-//				return ret;
-//			if (k < n->_data.first) {
-//				ret = DELETING(n->_left, k);
-//				n->_left = ret.first;
-//			} else if (n->_data.first < k) {
-//				ret = DELETING(n->_right, k);
-//				n->_right = ret.first;
-//			} else if ((n->_left == NULL) || (n->_right == NULL)) {
-//				node* tmp = NULL;
-//				if (n->_left)
-//					tmp = tmp->_left;
-//				else if (n->_right)
-//					tmp = tmp->_right;
-//				if (tmp) {
-//					tmp->_parent = n->_parent;
-//					if (tmp->_parent) {
-//						if (tmp->_parent->_left == n)
-//							tmp->_parent->_left = tmp;
-//						else
-//							tmp->_parent->_right = tmp;
-//					}
-//				}
-//				DeleteNode(n);
-//				n = tmp;
-//				ret.second = true;
-//			} else {
-//				node *next = n->_right;
-//				while (next->_left)
-//					next = next->_left;
-//			}
-//		}
+
 		node* BALANCE(node* _cur) {
 			OVER_HEAD(_cur);
 			int  BF_count = BF(_cur);
@@ -173,14 +143,6 @@ namespace ft {
 			r->_left = r2;
 			if (r2)
 				r2->_parent = r;
-////			if (l->_parent) {
-////				if (l->_parent->_left == r)
-////					l->_parent->_left = l;
-////				else
-////					l->_parent->_right = l;
-////			}
-//			r->_left = r2;
-
 			OVER_HEAD(r);
 			OVER_HEAD(l);
 			return l;
@@ -195,18 +157,6 @@ namespace ft {
 				else
 					l->_parent->_right = r;
 			}
-//			r->_parent = l->_parent;
-//			r->_left = l;
-//			if (r->_parent) {
-//				if (r->_parent->_left == l)
-//					r->_parent->_left = r;
-//				else
-//					r->_parent->_right = r;
-//			}
-//			l->_right = l2;
-//			if (l2)
-//				l2->_parent = l;
-//			l->_parent = r;
 			r->_parent = l->_parent;
 			r->_left = l;
 			l->_parent = r;

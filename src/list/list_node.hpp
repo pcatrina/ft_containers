@@ -1,6 +1,12 @@
 #ifndef FT_CONTAINERS_LIST_NODE_HPP
 #define FT_CONTAINERS_LIST_NODE_HPP
 
+#include <limits>
+#include <cstddef>
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
+
 namespace ft {
 	template<class T> class list_node {
 	public:

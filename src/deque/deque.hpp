@@ -6,6 +6,9 @@
 #include "../common/reverse_iterator.hpp"
 #include <limits>
 #include <cstddef>
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
 
 namespace ft {
 	template < class T, class Alloc = std::allocator<T> > class deque {

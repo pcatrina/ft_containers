@@ -2,6 +2,10 @@
 #define FT_CONTAINERS_REVERSE_ITERATOR_HPP
 
 #include <cstddef>
+#include <limits>
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
 
 namespace ft {
 	template <class Iterator> class reverse_iterator {

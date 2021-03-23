@@ -1,6 +1,12 @@
 #ifndef FT_CONTAINERS_MAP_NODE_HPP
 #define FT_CONTAINERS_MAP_NODE_HPP
 
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
+#include <limits>
+#include <cstddef>
+
 namespace ft {
 	template<class Pair,
 			class Alloc = std::allocator<Pair> > class map_node {

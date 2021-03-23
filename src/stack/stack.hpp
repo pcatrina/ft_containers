@@ -7,6 +7,9 @@
 #include "../list/list.hpp"
 #include <limits>
 #include <cstddef>
+# include <sstream>
+# include <typeinfo>
+# include <iostream>
 
 namespace ft {
 	template <class T, class Container = ft::list<T> > class stack {
