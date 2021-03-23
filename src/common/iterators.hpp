@@ -220,8 +220,8 @@ namespace ft {
 	public:
 		map_iterator(): _data(NULL), _comp() {};
 		map_iterator(const map_iterator &other): _data(other._data), _comp(other._comp) {};
-		template<class U> map_iterator(map_iterator<U> *other,
-		typename ft::enable_if<!ft::is_const<U>::value>::type* = NULL) {};
+//		template<class U> map_iterator(map_iterator<U> *other, typename ft::enable_if<!ft::is_const<U>::value>::type*
+//				= NULL) {};
 		map_iterator(node *data): _data(data), _comp() {};
 		~map_iterator() {};
 
@@ -235,13 +235,15 @@ namespace ft {
 		};
 
 		map_iterator& operator++() {_data = next_node(); return *this;}
-		map_iterator&operator++(int) {
+
+		map_iterator operator++(int) {
 			map_iterator tmp = *this;
 			++(*this);
 			return (tmp);
 		}
 		map_iterator& operator--() {_data = prev_node(); return *this;}
-		map_iterator&operator--(int) {
+
+		map_iterator operator--(int) {
 			map_iterator tmp = *this;
 			--(*this);
 			return (tmp);

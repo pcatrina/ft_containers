@@ -19,7 +19,7 @@ namespace ft {
 		typedef T mapped_type;
 		typedef ft::pair<const Key, T> value_type;
 		typedef ft::map_node<value_type> node_type;
-		typedef ft::less<key_type> key_compare;
+		typedef Compare key_compare;
 		typedef ft::less<value_type> value_compare;
 		typedef Alloc allocator_type;
 		typedef typename allocator_type::reference reference;
@@ -38,15 +38,15 @@ namespace ft {
 		typedef typename allocator_type::template
 		rebind<value_type>::other node_alloc;
 		typedef typename node_alloc::pointer _node_pointer;
-		value_compare 	_val_comp;
 		allocator_type	_alloc;
-		node_alloc _node_alloc;
 		key_compare		_comp;
+		node_alloc _node_alloc;
 		node*		 	_init_node;
 		node*			_start_node;
 		node*			_end_node;
 		size_type _length;
-//		CreateNode
+		value_compare 	_val_comp;
+		//		CreateNode
 		pointer CreateNode(const value_type& data) {
 			node* new_node = _alloc.allocate(1);
 			_alloc.construct(new_node, data);
@@ -89,8 +89,8 @@ namespace ft {
 			BALANCE(_cur);
 			return new_node;
 		}
-		ft::pair<node*, bool> DELETING(node *n, const key_type& k) {
-			ft::pair<node*, bool> ret (NULL, false);
+//		ft::pair<node*, bool> DELETING(node *n, const key_type& k) {
+//			ft::pair<node*, bool> ret (NULL, false);
 //			if (!n)
 //				return ret;
 //			if (k < n->_data.first) {
@@ -122,7 +122,7 @@ namespace ft {
 //				while (next->_left)
 //					next = next->_left;
 //			}
-		}
+//		}
 		node* BALANCE(node* _cur) {
 			OVER_HEAD(_cur);
 			int  BF_count = BF(_cur);
@@ -366,7 +366,7 @@ namespace ft {
 		template <class InputIterator>
 		map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type&
 		alloc = allocator_type(), typename enable_if<is_input_iterator<InputIterator>::value>::type* = NULL):
-			_alloc(alloc), _init_node(NULL) {
+			_alloc(alloc), _comp(comp), _init_node(NULL) {
 			_start_node = CreatInit();
 			_end_node = CreatInit();
 			_length = 0;
@@ -432,15 +432,28 @@ namespace ft {
 			}
 			++_length;
 			return ft::pair<iterator,bool>(iterator(new_node), true);
-		}
-		iterator insert (iterator position, const value_type& val) {
-			if (position._data != _start_node && position._data != _end_node &&
-					((_val_comp(val, position.next_node()->_data) && _val_comp(position.prev_node()->_data, val)))) {
-				insert(val);
-			} else {
-				insert(val).first;
-			}
 		};
+
+		iterator insert (iterator position, const value_type& val) {
+			if (position._data != _start_node && position._data != _end_node
+				&& ((_val_comp(val, position.next_node()->_data) && _val_comp(position.prev_node()->_data, val))))
+			{
+				node* tmp =  CreateNode(val);
+				node* n = AddNewNode(position._data, tmp);
+				if (n != tmp)
+				{
+					_alloc.destroy(tmp);
+					_alloc.deallocate(tmp, 1);
+					return iterator(n);
+				}
+				++_length;
+				return iterator(tmp);
+			}
+			else
+				return insert(val).first;
+		};
+
+
 		template <class InputIterator>
 		void insert (InputIterator first, InputIterator last,
 			   typename enable_if<is_input_iterator<InputIterator>::value>::type* = NULL) {
